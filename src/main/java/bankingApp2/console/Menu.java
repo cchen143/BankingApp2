@@ -14,18 +14,18 @@ public class Menu {
 	private UserAcctsDAO user;
 	private CustomersDAO cust;
 	private EmployeesDAO emp;
-	private ApplicationsDAO appl;
+	private ApplicationsDAO app;
 	private OwnersDAO own;
-	private ApplicantsDAO app;
+	private ApplicantsDAO apc;
 	
 	public Menu() {
 		this.acct = new AccountsDAO();
-		this.user = new UserAcctsDAO();
-		this.cust = new CustomersDAO();
-		this.emp = new EmployeesDAO();
-		this.appl = new ApplicationsDAO();
+		this.user = new UserAcctsDAO("username", "useraccts");
+		this.cust = new CustomersDAO("cID", "customers");
+		this.emp = new EmployeesDAO("eID", "employees");
+		this.app = new ApplicationsDAO("appID", "applications");
 		this.own = new OwnersDAO();
-		this.app = new ApplicantsDAO();
+		this.apc = new ApplicantsDAO();
 	}
 	
 	void main(Scanner sc, Connection con) throws SQLException {
@@ -53,12 +53,6 @@ public class Menu {
 		
 	}
 	
-	//TODO existing customer sign up for a user account 
-	//1. C and U DE new C and U
-	//2. C E and U DE New U
-	//3. C and U E return;
-	
-	
 	void signup(Scanner sc) throws SQLException {
 		System.out.println("1. Customer | 2. Employee: ");
 		String option = sc.nextLine(), name, username, pwd;
@@ -75,24 +69,23 @@ public class Menu {
 			String dob = sc.nextLine();
 			
 			Customer c = new Customer();
-			boolean CE = cust.getCAcct(name, address, dob, c), UE = c.getUserName() == null;
+			boolean CE = cust.getCAcct(name, address, dob, c), UE = c.getUserName() != null;
 			if (CE && UE) { System.out.println("Account exists."); return; }
 			
 			if (!UE) {
 				do {
 					System.out.println("Username: ");
 					username = sc.nextLine();
-				} while (user.checkUsername(username) && user.usernameNA());
+				} while (user.checkElement(username) && user.usernameNA());
 				System.out.println("Password: ");
 				pwd = sc.nextLine();
 				//create new customer account
-				if (!CE) cust.newCustomer(randInt(), name, address, dob, username);
+				if (!CE) cust.newCustomer(cust.randInt(), name, address, dob, username);
 				//update username on existing customer account
 				else cust.updateUsername(name, address, dob, username);
 				//create new user account
 				user.newUser(username, pwd, "CUSTOMER");
 			}
-			
 			break;
 			
 		case "2":
@@ -100,11 +93,11 @@ public class Menu {
 			do {
 				System.out.println("ADMIN | EMPLOYEE: ");
 				type = sc.nextLine();
-			} while (!(type.equals("ADMIN") || type.equals("EMPLOYEE")) && emp.invalidOPT());
+			} while (!(type.equals("ADMIN") || type.equals("EMPLOYEE")) && emp.invalidOption());
 			
 			System.out.println("Employee ID: ");
 			String eid = sc.nextLine();
-			if (emp.checkEID(eid) && emp.eAcctExists()) return;
+			if (emp.checkElement(eid) && emp.eAcctExists()) return;
 
 			System.out.println("Full name: ");
 			name = sc.nextLine();
@@ -112,7 +105,7 @@ public class Menu {
 			do {
 				System.out.println("Username: ");
 				username = sc.nextLine();
-			} while (user.checkUsername(username) && user.usernameNA());
+			} while (user.checkElement(username) && user.usernameNA());
 			
 			emp.newEmployee(eid, name, username);
 		
@@ -147,7 +140,7 @@ public class Menu {
 				String option = sc.nextLine();
 				switch(option) {
 				case "1":
-					Transaction.apply(sc);
+					Transaction.apply(sc, c, app, apc, cust);
 					break;
 				case "2":
 					acct.printAcctInfo(c.getCID());
@@ -222,9 +215,5 @@ public class Menu {
 		}
 	}
 	
-	public String randInt() { 
-		String cid = "";
-		do { cid = Integer.toString(0 + (int)(Math.random() * Integer.MAX_VALUE)); } while(cust.checkCID(cid));
-		return cid;
-	}
+	
 }

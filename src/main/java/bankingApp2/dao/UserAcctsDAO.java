@@ -8,33 +8,21 @@ import java.util.Set;
 import bankingApp2.models.Customer;
 import bankingApp2.models.Employee;
 
-public class UserAcctsDAO implements DAO {
+public class UserAcctsDAO extends TrackerDAO {
 	
-	Set<String> usernames;
-	
-	public UserAcctsDAO() {
-		usernames = new HashSet<String>();
-		Connection con = ConnectionManager.getConnection();
-		try (Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery(SELECT + "username" + FROM + "useraccts;")) {
-			while (rs.next()) {
-				usernames.add(rs.getString("username"));
-			}
-		} catch (SQLException e) { e.printStackTrace(); }
+	public UserAcctsDAO(String col, String table) {
+		super(col,  table);
 	}
 
 	public boolean doesNotMatch() {
 		System.out.println("Incorrect username or password.\n");
 		return true;
 	}
-
 	
 	public boolean usernameNA() {
 		System.out.println("Username is not available.\n");
 		return true;
 	}
-	
-	public boolean checkUsername(String username) { return usernames.contains(username); }
 	
 	public String validate(String username, String pwd) {
 		Connection con = ConnectionManager.getConnection();
@@ -60,7 +48,7 @@ public class UserAcctsDAO implements DAO {
 		} catch (SQLException e) { e.printStackTrace(); } 
 		
 		// add new username to set when an user account is created.
-		usernames.add(username);
+	super.elements.add(username);
 	}
 	
 }

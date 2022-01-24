@@ -3,7 +3,8 @@ package bankingApp2.dao;
 import static bankingApp2.dao.Utils.*;
 import java.sql.*;
 
-public class AccountsDAO implements DAO{
+public class AccountsDAO implements DAO {
+	
 	
 	public boolean invalidAmount() { System.out.println("Invalid amount.\n"); return true; }
 	
@@ -91,5 +92,5 @@ public class AccountsDAO implements DAO{
 			}
 		} catch (SQLException e) { e.printStackTrace(); } 
 		return totalBalance;
-	}
+	}	
 }

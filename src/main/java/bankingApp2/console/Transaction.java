@@ -75,9 +75,9 @@ public class Transaction {
 	static void viewCustomerInfo(Scanner sc, CustomersDAO cust, AccountsDAO acct) {
 		String name, address, dob;
 		Customer c = new Customer();
-		System.out.println("Customer name: ");
+		System.out.println("Name: ");
 		name = sc.nextLine();
-		System.out.println("Customer address: ");
+		System.out.println("Address: ");
 		address = sc.nextLine();
 		System.out.println("Date of Birth: ");
 		dob = sc.nextLine();
@@ -87,9 +87,31 @@ public class Transaction {
 	}
 	
 	//TODO
-	static void apply(Scanner sc) {
-		System.out.println("1. Single | 2. Joint: ");
-		String option = sc.nextLine();
+	static void apply(Scanner sc, Customer c, ApplicationsDAO app, ApplicantsDAO apc, CustomersDAO cust) {
+		
+		apc.add(c);
+		
+		String type, name, address, dob;
+		do {
+			System.out.println("SINGLE | JOINT: ");
+			type = sc.nextLine();
+		} while (!(type.equals("SINGLE") || type.equals("JOINT")) && app.invalidOption());
+		if (type.equals("JOINT")) {
+			while (true) {
+				Customer temp = new Customer();
+				System.out.println("Name: ");
+				name = sc.nextLine();
+				System.out.println("Address: ");
+				address = sc.nextLine();
+				System.out.println("Date of Birth: ");
+				dob = sc.nextLine();
+				temp.setCID(cust.randInt());
+				temp.setName(name);
+				temp.setAddress(address);
+				temp.setDOB(dob);
+				apc.add(c);
+			}
+		}
 		System.out.println("Initial Deposit: ");
 		String deposit = sc.nextLine();
 	}

@@ -7,27 +7,16 @@ import java.util.HashSet;
 import java.util.Set;
 import bankingApp2.models.Customer;
 	
-public class CustomersDAO implements DAO{
+public class CustomersDAO extends TrackerDAO {
 	
-	private Set<String> cids;
-	
-	public CustomersDAO() {
-		cids = new HashSet<String>();
-		Connection con = ConnectionManager.getConnection();
-		try (Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery(SELECT + "cID" + FROM + "customers;")) {
-			while (rs.next()) {
-				cids.add(rs.getString("cID"));
-			}
-		} catch (SQLException e) { e.printStackTrace(); }
+	public CustomersDAO(String col, String table) {
+		super(col, table);
 	}
 	
 	// Util Functions
 	public boolean cAcctExists() { System.out.println("Customer account exists.\n"); return true; }
 	
 	public boolean cAcctNotExists() { System.out.println("Customer account does not exist.\n"); return true; }
-
-	public boolean checkCID(String cid) { return this.cids.contains(cid); }
 	
 	
 	//Data Access
@@ -77,7 +66,7 @@ public class CustomersDAO implements DAO{
 			pstmt.executeUpdate();
 			
 		} catch (SQLException e) { e.printStackTrace(); }
-		cids.add(cid);
+		this.elements.add(cid);
 	}
 	
 	public Customer getCustomer(String username) {
@@ -103,4 +92,5 @@ public class CustomersDAO implements DAO{
 			pstmt.executeUpdate();
 		} catch (SQLException e) { e.printStackTrace();}
 	}
+	
 }

@@ -5,25 +5,12 @@ import java.sql.*;
 import java.util.HashSet;
 import java.util.Set;
 
-public class EmployeesDAO implements DAO {
+public class EmployeesDAO extends TrackerDAO {
 	
-	Set<String> eids;
-	
-	public EmployeesDAO() {
-		eids = new HashSet<>();
-		Connection con = ConnectionManager.getConnection();
-		try (Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery(SELECT + "eID" + FROM + "employees;")) {
-			while (rs.next()) {
-				eids.add(rs.getString("eID"));
-			}
-		} catch (SQLException e) { e.printStackTrace(); }
+	public EmployeesDAO(String col, String table) {
+		super(col, table);
 	}
 	
-	public boolean invalidOPT() {
-		System.out.println("Invalid option.\n");
-		return true;
-	}
 	public boolean eAcctExists() {
 		System.out.println("Employee account exists.\n");
 		return true;
@@ -41,8 +28,6 @@ public class EmployeesDAO implements DAO {
 		return res;
 	}
 	
-	public boolean checkEID(String eid) { return eids.contains(eid); } 
-	
 	public void newEmployee(String eid, String name,String username) {
 		//INSERT INTO (Cols) VALUES (vals),	    
 		Connection con = ConnectionManager.getConnection();
@@ -54,6 +39,7 @@ public class EmployeesDAO implements DAO {
 			pstmt.executeUpdate();
 			
 		} catch (SQLException e) { e.printStackTrace(); } 
-		eids.add(eid);
+		super.elements.add(eid);
 	}
+	
 }
