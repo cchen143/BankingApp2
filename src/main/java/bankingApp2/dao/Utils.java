@@ -64,8 +64,6 @@ public class Utils {
         }
     }
 	
-	public static int randInt() { return 0 + (int)(Math.random() * Integer.MAX_VALUE); }
-	
 	
 	//set a condition by strings
 	public static String setCondVal(String ... strs) {

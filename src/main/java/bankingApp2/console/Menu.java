@@ -73,25 +73,26 @@ public class Menu {
 			
 			System.out.println("Date of Birth: ");
 			String dob = sc.nextLine();
-			//TODO
 			
-			/*if (cust.exist(name, address, dob)) {
-			if (user.exist()true)
-			else 
-			}*/
-			int cid;
-			do {
-				cid = randInt();
-			} while(cust.exist("customers", "cID", Integer.toString(cid)));
+			Customer c = new Customer();
+			boolean CE = cust.getCAcct(name, address, dob, c), UE = c.getUserName() == null;
+			if (CE && UE) { System.out.println("Account exists."); return; }
 			
-			do {
-				System.out.println("Username: ");
-				username = sc.nextLine();
-			} while (user.exist("useraccts", "username", username) && user.uAcctExists());
-			System.out.println("Password: ");
-			pwd = sc.nextLine();
-			//TODO
-			cust.newCustomer(Integer.toString(cid), name, address, dob, username);
+			if (!UE) {
+				do {
+					System.out.println("Username: ");
+					username = sc.nextLine();
+				} while (user.checkUsername(username) && user.usernameNA());
+				System.out.println("Password: ");
+				pwd = sc.nextLine();
+				//create new customer account
+				if (!CE) cust.newCustomer(randInt(), name, address, dob, username);
+				//update username on existing customer account
+				else cust.updateUsername(name, address, dob, username);
+				//create new user account
+				user.newUser(username, pwd, "CUSTOMER");
+			}
+			
 			break;
 			
 		case "2":
@@ -100,11 +101,10 @@ public class Menu {
 				System.out.println("ADMIN | EMPLOYEE: ");
 				type = sc.nextLine();
 			} while (!(type.equals("ADMIN") || type.equals("EMPLOYEE")) && emp.invalidOPT());
+			
 			System.out.println("Employee ID: ");
 			String eid = sc.nextLine();
-			
-			//TODO
-			if (emp.exist(eid) && emp.eAcctExists()) return;
+			if (emp.checkEID(eid) && emp.eAcctExists()) return;
 
 			System.out.println("Full name: ");
 			name = sc.nextLine();
@@ -112,12 +112,14 @@ public class Menu {
 			do {
 				System.out.println("Username: ");
 				username = sc.nextLine();
-			} while (user.exist("useraccts", "username", username) && user.uAcctExists());
+			} while (user.checkUsername(username) && user.usernameNA());
 			
+			emp.newEmployee(eid, name, username);
+		
 			System.out.println("Password: ");
 			pwd = sc.nextLine();
-			//TODO
-			emp.newEmployee(eid, name, username);
+			
+			user.newUser(username, pwd, type);
 			break;
 			
 		default:
@@ -137,13 +139,10 @@ public class Menu {
 			type = user.validate(username, pwd);
 		} while (type.equals("") && user.doesNotMatch());
 		
-		Customer c = null;
-		if (user.exist("useraccts", "username", username)) c = cust.getCustomer(username);
-		
-		
 		while (true) {
 			switch (type) {
 			case "CUSTOMER":
+				Customer c = cust.getCustomer(username);
 				System.out.println("1. Apply | 2. Withdraw | 3. Deposit | 4. Transfer | 5. View Statement | 6. Exit: ");
 				String option = sc.nextLine();
 				switch(option) {
@@ -221,5 +220,11 @@ public class Menu {
 				}
 			}
 		}
+	}
+	
+	public String randInt() { 
+		String cid = "";
+		do { cid = Integer.toString(0 + (int)(Math.random() * Integer.MAX_VALUE)); } while(cust.checkCID(cid));
+		return cid;
 	}
 }

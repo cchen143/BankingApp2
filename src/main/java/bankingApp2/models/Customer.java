@@ -6,7 +6,6 @@ public class Customer {
 	private String name;
 	private String dob;
 	private String address;
-	
 	private String username;
 	
 	private final UserType cType = UserType.CUSTOMER;

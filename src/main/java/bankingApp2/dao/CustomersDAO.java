@@ -2,21 +2,35 @@ package bankingApp2.dao;
 
 import static bankingApp2.dao.Utils.*;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.List;
-
+import java.sql.*;
+import java.util.HashSet;
+import java.util.Set;
 import bankingApp2.models.Customer;
 	
 public class CustomersDAO implements DAO{
 	
+	private Set<String> cids;
+	
+	public CustomersDAO() {
+		cids = new HashSet<String>();
+		Connection con = ConnectionManager.getConnection();
+		try (Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery(SELECT + "cID" + FROM + "customers;")) {
+			while (rs.next()) {
+				cids.add(rs.getString("cID"));
+			}
+		} catch (SQLException e) { e.printStackTrace(); }
+	}
+	
+	// Util Functions
 	public boolean cAcctExists() { System.out.println("Customer account exists.\n"); return true; }
 	
 	public boolean cAcctNotExists() { System.out.println("Customer account does not exist.\n"); return true; }
+
+	public boolean checkCID(String cid) { return this.cids.contains(cid); }
 	
+	
+	//Data Access
 	public boolean exist(String name, String address, String dob) {
 		Connection con = ConnectionManager.getConnection();
 		boolean res = false;
@@ -27,21 +41,6 @@ public class CustomersDAO implements DAO{
 			try (ResultSet rs = pstmt.executeQuery()) { res = rs.next(); } 
 		} catch (SQLException e) { e.printStackTrace(); }
 		return res;
-	}
-	
-	public void newCustomer(String cid, String name, String address, String dob, String username) {
-		//INSERT INTO (Cols) VALUES (vals),	    
-		Connection con = ConnectionManager.getConnection();
-		try (PreparedStatement pstmt = con.prepareStatement(INSERT_INTO + "customers (cID, name, address, dob, username)" + VALUES + "( ?, ?, ?, ?, ?);");) {
-			
-			pstmt.setString(1, cid);
-			pstmt.setString(2, name);
-			pstmt.setString(3, address);
-			pstmt.setString(4, dob);
-			pstmt.setString(5, username);
-			pstmt.executeUpdate();
-			
-		} catch (SQLException e) { e.printStackTrace(); } 
 	}
 	
 	public boolean getCAcct(String name, String address, String dob, Customer c) {
@@ -65,6 +64,22 @@ public class CustomersDAO implements DAO{
 		return res;
 	}
 	
+	public void newCustomer(String cid, String name, String address, String dob, String username) {
+		//INSERT INTO (Cols) VALUES (vals),	    
+		Connection con = ConnectionManager.getConnection();
+		try (PreparedStatement pstmt = con.prepareStatement(INSERT_INTO + "customers (cID, name, address, dob, username)" + VALUES + "( ?, ?, ?, ?, ?);");) {
+			
+			pstmt.setString(1, cid);
+			pstmt.setString(2, name);
+			pstmt.setString(3, address);
+			pstmt.setString(4, dob);
+			pstmt.setString(5, username);
+			pstmt.executeUpdate();
+			
+		} catch (SQLException e) { e.printStackTrace(); }
+		cids.add(cid);
+	}
+	
 	public Customer getCustomer(String username) {
 		Connection con = ConnectionManager.getConnection();
 		Customer c = null;
@@ -76,5 +91,16 @@ public class CustomersDAO implements DAO{
 				}
 		} catch (SQLException e) { e.printStackTrace(); }
 		return c;
+	}
+	
+	public void updateUsername(String name, String address, String dob, String username) { 
+		Connection con = ConnectionManager.getConnection();
+		try (PreparedStatement pstmt = con.prepareStatement(UPDATE + "customers" + SET + "username = ?" + WHERE + "name = ? and address = ? and dob = ?;")) {
+			pstmt.setString(1, username);
+			pstmt.setString(2, name);
+			pstmt.setString(3, address);
+			pstmt.setString(4, dob);
+			pstmt.executeUpdate();
+		} catch (SQLException e) { e.printStackTrace();}
 	}
 }
