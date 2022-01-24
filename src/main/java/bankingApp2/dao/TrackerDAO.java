@@ -30,6 +30,7 @@ public abstract class TrackerDAO implements DAO {
 	
 	public boolean checkElement(String element) { return this.elements.contains(element); }
 	
+	//addToTemp
 	public void add(String element) { this.elements.add(element); }
 	
 	public void remove(String element) { this.elements.remove(element); }

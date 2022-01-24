@@ -66,7 +66,24 @@ public class CustomersDAO extends TrackerDAO {
 		} catch (SQLException e) { e.printStackTrace(); }
 	}
 	
-	public void addToCs(Customer... cs) {
+	public void newNonExistingCustomers(Connection con, Customer... cs) {
+		//INSERT INTO (Cols) VALUES (vals),	    
+		try (PreparedStatement pstmt = con.prepareStatement(INSERT_INTO + "customers (cID, name, address, dob, username)" + VALUES + "( ?, ?, ?, ?, ?);");) {
+			for (Customer c : cs) {
+				if (c.getCID()  == null ) {
+					pstmt.setString(1, c.getCID());
+					pstmt.setString(2, c.getName());
+					pstmt.setString(3, c.getAddress());
+					pstmt.setString(4, c.getDOB());
+					pstmt.setString(5, c.getUserName());
+					pstmt.addBatch();
+				}
+			}
+			pstmt.executeBatch();
+		} catch (SQLException e) { e.printStackTrace(); }
+	}
+	
+	public void addToTemp(Customer... cs) {
 		for (Customer c :cs) { this.elements.add(c.getCID()); }
 	}
 	

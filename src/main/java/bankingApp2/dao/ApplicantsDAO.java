@@ -19,18 +19,18 @@ import bankingApp2.models.Customer;
 
 //joint table; customers and applications
 public class ApplicantsDAO implements DAO {
-	List<Customer> apcs;
+	List<Customer> temp;
 	
 	public ApplicantsDAO() {
-		apcs = new ArrayList<>();
+		this.temp = new ArrayList<>();
 	}
 	
-	public void add(Customer c) { apcs.add(c); }
+	public void add(Customer c) { this.temp.add(c); }
 	
 	public void newApplicants(Connection con, String appID) {
 		//INSERT INTO (Cols) VALUES (vals),	    
 		try (PreparedStatement  pstmt = con.prepareStatement(INSERT_INTO + "applicants (appID, cID, name, address, dob)" + VALUES + "( ?, ?, ?, ? ,?);");) {
-			for (Customer c: apcs) {
+			for (Customer c: this.temp) {
 				pstmt.setString(1, appID);
 				pstmt.setString(2, c.getCID());
 				pstmt.setString(3, c.getName());
@@ -39,24 +39,23 @@ public class ApplicantsDAO implements DAO {
 				pstmt.addBatch();
 			}
 			pstmt.executeBatch();
-			apcs = new ArrayList<>();
 		} catch (SQLException e) { e.printStackTrace(); }
 	}
 	
-	public List<Customer> getApplicants(Connection con, String appID) {
-		List<Customer> cs = null;
+	public Customer[] getApplicants() { return this.temp.toArray(new Customer[temp.size()]); }
+	
+	public void cacheApplicants(Connection con, String appID) {
 		try (PreparedStatement pstmt = con.prepareStatement(SELECT + ALL + FROM + "applicants" + WHERE + "appID = ?;")) {
 				pstmt.setString(1, appID);
 				try ( ResultSet rs = pstmt.executeQuery()) {
 					while(rs.next()) {
-						cs.add(new Customer(rs.getString("cID"), rs.getString("name"), rs.getString("address"), rs.getString("dob"), null));
+						this.temp.add(new Customer(rs.getString("cID"), rs.getString("name"), rs.getString("address"), rs.getString("dob"), null));
 					}
 				}
 		} catch (SQLException e) { e.printStackTrace(); }
-		return cs;
 	}
 	
-	public boolean addToApcs(String... cs) {
+	public boolean addToTemp(String... cs) {
 		Connection con = ConnectionManager.getConnection();
 		boolean res = false;
 		try (PreparedStatement pstmt = con.prepareStatement(SELECT + ALL + FROM + "customers" + WHERE + "name = ? and address = ? and dob = ?;")) {
@@ -68,13 +67,17 @@ public class ApplicantsDAO implements DAO {
 					boolean flag = rs.next();
 					res =  res | flag;
 					if (flag) {
-						this.apcs.add( new Customer(rs.getString("cid"), rs.getString("name"), rs.getString("address"),  rs.getString("dob"), rs.getString("username")));
+						this.temp.add( new Customer(rs.getString("cid"), rs.getString("name"), rs.getString("address"),  rs.getString("dob"), rs.getString("username")));
 					} else {
-						this.apcs.add( new Customer(null, cs[i], cs[i + 1],  cs[i + 2], null));
+						this.temp.add( new Customer(null, cs[i], cs[i + 1],  cs[i + 2], null));
 					}
 				}
 			}
 		} catch (SQLException e) { e.printStackTrace(); }
 		return res;
+	}
+	
+	public void clearTemp() {
+		this.temp = new ArrayList<>();
 	}
 }

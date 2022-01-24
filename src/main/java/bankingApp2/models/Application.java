@@ -3,28 +3,26 @@ import java.util.*;
 
 public class Application {
 	//Application ID
-	private String aid;
-	private AcctType atype;
+	private String appid;
+	private String acctype;
 	private Double deposit;
 	
-	public Application(String aid, String option, double deposit) {
-		this.aid = aid;
+	public Application(String appid, String acctype, double deposit) {
+		this.appid = appid;
 		this.deposit = deposit;
-		this.atype = (option.equals("checking"))? AcctType.CHECKING : AcctType.SAVING;
+		this.acctype = acctype;
 	}
 
-	public String getAppID() { return this.aid; }
+	public String getAppID() { return this.appid; }
 	
-	public AcctType getAcctType() { return this.atype; }
-	
-	
+	public String getAcctType() { return this.acctype; }
 	
 	public double getDeposit() { return this.deposit; }
 
 	
 	@Override
 	public String toString() {
-		return "Application ID: " + this.aid + "\n" +
+		return "Application ID: " + this.appid + "\n" +
 		       "Account Type: " + this.atype + "\n" +
 		       "Deposit: " + this.deposit + "\n";
 	}

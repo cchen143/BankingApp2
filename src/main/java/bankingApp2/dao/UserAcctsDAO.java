@@ -39,7 +39,7 @@ public class UserAcctsDAO extends TrackerDAO {
 		// add new username to set when an user account is created.
 	}
 	
-	public void addToUs(Customer... cs) {
+	public void addToTemp(Customer... cs) {
 		for (Customer c: cs) {
 			this.elements.add(c.getUserName());
 		}

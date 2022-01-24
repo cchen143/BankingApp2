@@ -86,8 +86,8 @@ public class Menu {
 					//create new user account
 					user.newUser(con, username, pwd, "CUSTOMER");
 					con.commit();
-					if (c != null) cust.addToCs(c);
-					user.addToUs(c);
+					if (c != null) cust.addToTemp(c);
+					user.addToTemp(c);
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					try { if (con != null) con.rollback(); } catch (SQLException e2) { e2.printStackTrace(); }

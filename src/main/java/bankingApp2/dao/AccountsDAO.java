@@ -57,8 +57,14 @@ public class AccountsDAO extends TrackerDAO {
 		return totalBalance;
 	}
 	
-	public void newAccount() {
-		
+	public void newAccount(Connection con, String acctNum, String acctType, double balance, boolean isjoint) {
+		try (PreparedStatement pstmt = con.prepareStatement(INSERT_INTO + "accounts (acctNum, acctType, balance, isjoint)" + VALUES + "( ?, ?, ?, ?);");) {
+			pstmt.setString(1, acctNum);
+			pstmt.setString(2, acctType);
+			pstmt.setDouble(3, balance);
+			pstmt.setBoolean(4, isjoint);
+			pstmt.executeUpdate();
+		} catch (SQLException e) { e.printStackTrace(); } 
 	}
 
 }

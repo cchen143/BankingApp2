@@ -97,10 +97,10 @@ public class Transaction {
 
 		apc.add(c);
 
-		String type = choose2(sc, "1. SINGLE | 2. JOINT: "), name, address, dob, deposit;
-		type = (type.equals("1")) ? "SINGLE" : "JOINT";
+		String option = choose2(sc, "1. SINGLE | 2. JOINT: "), name, address, dob, deposit;
+		option = (option.equals("1")) ? "SINGLE" : "JOINT";
 		List<String> info = new ArrayList<>();
-		if (type.equals("JOINT")) {
+		if (option.equals("JOINT")) {
 			String flag = "Enter information of co-owners.";
 			System.out.println(flag);
 			while (!flag.equals("q")) {
@@ -114,8 +114,11 @@ public class Transaction {
 				System.out.println("Enter q to quit.");
 				flag = sc.nextLine();
 			}
-			apc.addToApcs(info.toArray(new String[info.size()]));
+			apc.addToTemp(info.toArray(new String[info.size()]));
 		}
+		
+		String type = choose2(sc, "1. CHECKING | 2. SAVING: ");
+		type = (type.equals("1")) ? "CHECKING" : "SAVING";
 
 		do {
 			System.out.println("Initial Deposit: ");
@@ -130,6 +133,8 @@ public class Transaction {
 			app.newApplictaion(con, appID, type, Double.parseDouble(deposit));
 			apc.newApplicants(con, appID);
 			con.commit();
+			apc.clearTemp();
+			app.add(appID);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			try { if (con != null) con.rollback(); } catch (SQLException e2) { e2.printStackTrace(); }
@@ -159,19 +164,25 @@ public class Transaction {
 			//check whether a customer exists: name, address, dob
 			//add new Customer
 			//add new account and new ownership
+			Customer[] cs = new Customer[0];
+			String acctNum = acct.randInt();
 			if (option.equals("1")) {
 				Application ap = app.getApplication(appID);
-				List<Customer> apcs = apc.getApplicants(con, appID);
-				for (Customer c: apcs) {
-					if (c.getCID() == null) {
-						cust.newCustomers
-					}
-				}
+				apc.cacheApplicants(con, appID);
+				cs = apc.getApplicants();
+				cust.newNonExistingCustomers(con, cs);
+				acct.newAccount(con, acctNum, ap.getAcctType(), ap.getDeposit(), cs.length > 1);
+				own.newOwners(con, acctNum, cs);
 			}
-			app.delete(con, "appID", "applications", appID);
 			apc.delete(con, "appID", "applicants", appID);
+			app.delete(con, "appID", "applications", appID);
 			con.commit();
 			app.remove(appID);
+			apc.clearTemp();
+			if (option.equals("1")) {
+				cust.addToTemp(cs);
+				acct.add(acctNum);
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			try { if (con != null) con.rollback(); } catch (SQLException e2) { e2.printStackTrace(); }

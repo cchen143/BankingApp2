@@ -50,4 +50,5 @@ public class ApplicationsDAO extends TrackerDAO {
 		return app;
 	}
 	
+	public void addToTemp(String appID) {this.elements.add(appID); }
 }
