@@ -8,10 +8,19 @@ import java.util.Set;
 import bankingApp2.models.Customer;
 import bankingApp2.models.Employee;
 
-public class UserAcctsDAO extends TrackerDAO {
+public class UserAcctsDAO {
+	
+	protected Set<String> elements;
 	
 	public UserAcctsDAO(String col, String table) {
-		super(col,  table);
+		elements = new HashSet<String>();
+		Connection con = ConnectionManager.getConnection();
+		try (Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery(SELECT + col + FROM + table + " ;")) {
+			while (rs.next()) {
+				elements.add(rs.getString(col));
+			}
+		} catch (SQLException e) { e.printStackTrace(); }
 	}
 	
 	public String validate(String username, String pwd) {
@@ -45,7 +54,6 @@ public class UserAcctsDAO extends TrackerDAO {
 		}
 	}
 	
-	@Override
-	public String randInt() { return "Not in use.\n"; }
+	public boolean check(String username) { return this.elements.contains(username); }
 	
 }

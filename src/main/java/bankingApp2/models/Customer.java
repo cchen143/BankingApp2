@@ -2,7 +2,7 @@ package bankingApp2.models;
 
 public class Customer {
 	
-	private String cid;
+	private int cid;
 	private String name;
 	private String dob;
 	private String address;
@@ -12,7 +12,7 @@ public class Customer {
 	
 	public Customer() { }
 	
-	public Customer (String cid, String name, String address, String dob, String username) {
+	public Customer (int cid, String name, String address, String dob, String username) {
 		this.cid = cid;
 		this.name = name;
 		this.dob = dob;
@@ -27,8 +27,8 @@ public class Customer {
 	public String getUserName() { return this.username; }
 	public void setUserName(String uid) { this.username = uid; }
 	
-	public String getCID() { return this.cid; }
-	public void setCID(String cid) { this.cid = cid; }
+	public int getCID() { return this.cid; }
+	public void setCID(int cid) { this.cid = cid; }
 	
 	public void setName(String name) { this.name = name; }
 	public String getName() { return this.name; }

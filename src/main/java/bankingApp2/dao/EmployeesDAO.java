@@ -23,17 +23,18 @@ public class EmployeesDAO extends TrackerDAO {
 		return res;
 	}
 	
-	public void newEmployee(Connection con, String eid, String name,String username) {
+	public void newEmployee(Connection con, int eid, String name,String username) {
 		//INSERT INTO (Cols) VALUES (vals),	    
 		try (PreparedStatement  pstmt = con.prepareStatement(INSERT_INTO + "employees (eID, name, username)" + VALUES + "( ?, ?, ?);");) {
 			
-			pstmt.setString(1, eid);
+			pstmt.setInt(1, eid);
 			pstmt.setString(2, name);
 			pstmt.setString(3, username);
 			pstmt.executeUpdate();
 			
 		} catch (SQLException e) { e.printStackTrace(); } 
-		super.elements.add(eid);
+		//in Transaction
+		//this.elements.add(eid);
 	}
 	
 }

@@ -7,11 +7,11 @@ public interface DAO {
 	
 	
 
-	default boolean exist(String table, String col, String value) {
+	default boolean exist(String table, String col, int value) {
 		Connection con = ConnectionManager.getConnection();
 		boolean res = false;
 		try (PreparedStatement pstmt = con.prepareStatement(SELECT + ALL + FROM + table + WHERE + col + " = ?;")) {
-			pstmt.setString(1, value);
+			pstmt.setInt(1, value);
 			try (ResultSet rs = pstmt.executeQuery()) { res = rs.next(); } 
 		} catch (SQLException e) { e.printStackTrace(); }
 		return res;
@@ -34,9 +34,9 @@ public interface DAO {
 		} catch (SQLException e) { e.printStackTrace(); }
 	}
 	
-	default void delete(Connection con, String col, String table, String val) {
+	default void delete(Connection con, String col, String table, int val) {
 		try (PreparedStatement pstmt = con.prepareStatement(DELETE + FROM + table + WHERE + col + " = ?");) {
-			pstmt.setString(1, val);
+			pstmt.setInt(1, val);
 			pstmt.executeUpdate();
 		} catch (SQLException e) { e.printStackTrace(); }
 	}

@@ -24,11 +24,11 @@ public class ApplicationsDAO extends TrackerDAO {
 		super(col, table);
 	}
 	
-	public void newApplictaion(Connection con, String appID, String acctType, double deposit) {
+	public void newApplictaion(Connection con, int appID, String acctType, double deposit) {
 		//INSERT INTO (Cols) VALUES (vals),
 		try (PreparedStatement  pstmt = con.prepareStatement(INSERT_INTO + "applications (appID, acctType, deposit)" + VALUES + "( ?, ?, ?);");) {
 			
-			pstmt.setString(1, appID);
+			pstmt.setInt(1, appID);
 			pstmt.setString(2, acctType);
 			pstmt.setDouble(3, deposit);
 			pstmt.executeUpdate();
@@ -37,18 +37,18 @@ public class ApplicationsDAO extends TrackerDAO {
 		super.elements.add(appID);
 	}
 	
-	public Application getApplication(String appID) {
+	public Application getApplication(int appID) {
 		Connection con = ConnectionManager.getConnection();
 		Application app = null;
 		try (PreparedStatement pstmt = con.prepareStatement(SELECT + ALL + FROM + "applications" + WHERE + "appID = ?;")) {
-				pstmt.setString(1, appID);
+				pstmt.setInt(1, appID);
 				try ( ResultSet rs = pstmt.executeQuery()) {
 					rs.next();
-					app = new Application(rs.getString("appID"), rs.getString("acctType"), rs.getDouble("deposit"));
+					app = new Application(rs.getInt("appID"), rs.getString("acctType"), rs.getDouble("deposit"));
 				}
 		} catch (SQLException e) { e.printStackTrace(); }
 		return app;
 	}
 	
-	public void addToTemp(String appID) {this.elements.add(appID); }
+	public void addToTemp(int appID) {this.elements.add(appID); }
 }

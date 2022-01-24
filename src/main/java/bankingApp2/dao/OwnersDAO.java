@@ -12,11 +12,11 @@ import bankingApp2.models.Customer;
 //joint table; customers and accounts
 public class OwnersDAO implements DAO{
 	
-	public void newOwners(Connection con, String acctNum, Customer... cs) {
+	public void newOwners(Connection con, int acctNum, Customer... cs) {
 		try (PreparedStatement pstmt = con.prepareStatement(INSERT_INTO + "owners (acctNum, cID)" + VALUES + "( ?, ?);");) {
 			for (Customer c : cs) {
-				pstmt.setString(1, acctNum);
-				pstmt.setString(2, c.getCID());
+				pstmt.setInt(1, acctNum);
+				pstmt.setInt(2, c.getCID());
 				pstmt.addBatch();
 			}
 			pstmt.executeBatch();

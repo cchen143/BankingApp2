@@ -8,38 +8,38 @@ import static bankingApp2.dao.Utils.*;
 
 public abstract class TrackerDAO implements DAO {
 	
-	protected Set<String> elements;
+	protected Set<Integer> elements;
 	
 	public TrackerDAO(String col, String table) {
-		elements = new HashSet<String>();
+		elements = new HashSet<Integer>();
 		Connection con = ConnectionManager.getConnection();
 		try (Statement stmt = con.createStatement();
 				ResultSet rs = stmt.executeQuery(SELECT + col + FROM + table + " ;")) {
 			while (rs.next()) {
-				elements.add(rs.getString(col));
+				elements.add(rs.getInt(col));
 			}
 		} catch (SQLException e) { e.printStackTrace(); }
 	}
 	
 	//Util Functions
-	public String randInt() { 
-		String element = "";
-		do { element = Integer.toString(0 + (int)(Math.random() * Integer.MAX_VALUE)); } while(this.elements.contains(element));
+	public int randInt() { 
+		int element = -1;
+		do { element = 0 + (int)(Math.random() * Integer.MAX_VALUE); } while(this.elements.contains(element));
 		return element;
 	}
 	
-	public boolean checkElement(String element) { return this.elements.contains(element); }
+	public boolean checkElement(int element) { return this.elements.contains(element); }
 	
 	//addToTemp
-	public void add(String element) { this.elements.add(element); }
+	public void add(int element) { this.elements.add(element); }
 	
-	public void remove(String element) { this.elements.remove(element); }
+	public void remove(int element) { this.elements.remove(element); }
 	
 	public int size() { return this.elements.size(); }
 	
 	///////TEMP
 	public void printSet() {
-		for (String e : elements) {
+		for (int e : elements) {
 			System.out.println(e);
 		}
 	}

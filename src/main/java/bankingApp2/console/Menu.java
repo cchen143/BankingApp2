@@ -67,7 +67,7 @@ public class Menu {
 				do {
 					System.out.println("Username: ");
 					username = sc.nextLine();
-				} while (username.equals("") && user.checkElement(username) && usernameNA());
+				} while (username.equals("") && user.check(username) && usernameNA());
 				System.out.println("Password: ");
 				pwd = sc.nextLine();
 
@@ -101,7 +101,8 @@ public class Menu {
 			type = (type.equals("1")) ? "ADMIN" : "EMPLOYEE";
 
 			System.out.println("Employee ID: ");
-			String eid = sc.nextLine();
+			int eid = isPosInt(sc.nextLine());
+			
 			if (emp.checkElement(eid) && eAcctExists()) return;
 
 			System.out.println("Full name: ");
@@ -110,7 +111,7 @@ public class Menu {
 			do {
 				System.out.println("Username: ");
 				username = sc.nextLine();
-			} while (user.checkElement(username) && usernameNA());
+			} while (user.check(username) && usernameNA());
 
 
 

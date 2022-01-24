@@ -75,7 +75,15 @@ public class Utils {
 	
 	public static boolean appNotExists() { System.out.println("Application does not exist.\n"); return true; }
 
-	public static boolean isPosNum(String str) { return str.matches("[1-9]\\d*(\\.*\\d*)?") || str.matches("0\\.\\d*[1-9]"); }
+	public static double isPosNum(String str) { 
+		if (str.matches("[1-9]\\d*(\\.*\\d*)?") || str.matches("0\\.\\d*[1-9]")) return Double.parseDouble(str);
+		return -1;
+	}
+	
+	public static int isPosInt(String str) { 
+		if (str.matches("[1-9]\\d*")) return Integer.parseInt(str);
+		return -1;
+	}
 	
 	public static String choose2(Scanner sc, String opt) {
 		String res;

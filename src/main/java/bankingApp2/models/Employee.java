@@ -1,12 +1,12 @@
 package bankingApp2.models;
 
 public class Employee {
-	private String eid;
+	private int eid;
 	private String name;
 	private String username;
 	private String eType;
 	
-	public Employee (String eid, String name, String username, String etype) {
+	public Employee (int eid, String name, String username, String etype) {
 		this.eid = eid;
 		this.name = name;
 		this.username = username;
@@ -15,8 +15,8 @@ public class Employee {
 	
 	public String getUserType() { return this.eType; }
 	
-	public String getEmployeeID() { return this.eid; }
-	public void setEmployeeID(String eid) { this.eid = eid; }
+	public int getEmployeeID() { return this.eid; }
+	public void setEmployeeID(int eid) { this.eid = eid; }
 
 	public String getName() { return this.name; }
 	public void setName(String name) { this.name = name; }

@@ -27,12 +27,12 @@ public class ApplicantsDAO implements DAO {
 	
 	public void add(Customer c) { this.temp.add(c); }
 	
-	public void newApplicants(Connection con, String appID) {
+	public void newApplicants(Connection con, int appID) {
 		//INSERT INTO (Cols) VALUES (vals),	    
 		try (PreparedStatement  pstmt = con.prepareStatement(INSERT_INTO + "applicants (appID, cID, name, address, dob)" + VALUES + "( ?, ?, ?, ? ,?);");) {
 			for (Customer c: this.temp) {
-				pstmt.setString(1, appID);
-				pstmt.setString(2, c.getCID());
+				pstmt.setInt(1, appID);
+				pstmt.setInt(2, c.getCID());
 				pstmt.setString(3, c.getName());
 				pstmt.setString(4, c.getAddress());
 				pstmt.setString(5, c.getDOB());
@@ -44,12 +44,12 @@ public class ApplicantsDAO implements DAO {
 	
 	public Customer[] getApplicants() { return this.temp.toArray(new Customer[temp.size()]); }
 	
-	public void cacheApplicants(Connection con, String appID) {
+	public void cacheApplicants(Connection con, int appID) {
 		try (PreparedStatement pstmt = con.prepareStatement(SELECT + ALL + FROM + "applicants" + WHERE + "appID = ?;")) {
-				pstmt.setString(1, appID);
+				pstmt.setInt(1, appID);
 				try ( ResultSet rs = pstmt.executeQuery()) {
 					while(rs.next()) {
-						this.temp.add(new Customer(rs.getString("cID"), rs.getString("name"), rs.getString("address"), rs.getString("dob"), null));
+						this.temp.add(new Customer(rs.getInt("cID"), rs.getString("name"), rs.getString("address"), rs.getString("dob"), null));
 					}
 				}
 		} catch (SQLException e) { e.printStackTrace(); }
@@ -67,9 +67,9 @@ public class ApplicantsDAO implements DAO {
 					boolean flag = rs.next();
 					res =  res | flag;
 					if (flag) {
-						this.temp.add( new Customer(rs.getString("cid"), rs.getString("name"), rs.getString("address"),  rs.getString("dob"), rs.getString("username")));
+						this.temp.add( new Customer(rs.getInt("cid"), rs.getString("name"), rs.getString("address"),  rs.getString("dob"), rs.getString("username")));
 					} else {
-						this.temp.add( new Customer(null, cs[i], cs[i + 1],  cs[i + 2], null));
+						this.temp.add( new Customer(-1, cs[i], cs[i + 1],  cs[i + 2], null));
 					}
 				}
 			}

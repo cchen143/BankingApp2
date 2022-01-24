@@ -38,7 +38,7 @@ public class CustomersDAO extends TrackerDAO {
 				pstmt.setString(3, dob);
 				try ( ResultSet rs = pstmt.executeQuery()) {
 					if (rs.next()) {
-						c.setCID(rs.getString("cid"));
+						c.setCID(rs.getInt("cid"));
 						c.setName(rs.getString("name"));
 						c.setAddress(rs.getString("address"));
 						c.setDOB(rs.getString("dob"));
@@ -55,7 +55,7 @@ public class CustomersDAO extends TrackerDAO {
 		try (PreparedStatement pstmt = con.prepareStatement(INSERT_INTO + "customers (cID, name, address, dob, username)" + VALUES + "( ?, ?, ?, ?, ?);");) {
 			for (Customer c : cs) {
 
-				pstmt.setString(1, c.getCID());
+				pstmt.setInt(1, c.getCID());
 				pstmt.setString(2, c.getName());
 				pstmt.setString(3, c.getAddress());
 				pstmt.setString(4, c.getDOB());
@@ -70,8 +70,8 @@ public class CustomersDAO extends TrackerDAO {
 		//INSERT INTO (Cols) VALUES (vals),	    
 		try (PreparedStatement pstmt = con.prepareStatement(INSERT_INTO + "customers (cID, name, address, dob, username)" + VALUES + "( ?, ?, ?, ?, ?);");) {
 			for (Customer c : cs) {
-				if (c.getCID()  == null ) {
-					pstmt.setString(1, c.getCID());
+				if (c.getCID()  == -1 ) {
+					pstmt.setInt(1, c.getCID());
 					pstmt.setString(2, c.getName());
 					pstmt.setString(3, c.getAddress());
 					pstmt.setString(4, c.getDOB());
@@ -94,7 +94,7 @@ public class CustomersDAO extends TrackerDAO {
 				pstmt.setString(1, username);
 				try ( ResultSet rs = pstmt.executeQuery()) {
 					rs.next();
-					c = new Customer(rs.getString("cID"), rs.getString("name"), rs.getString("address"), rs.getString("dob"), username);
+					c = new Customer(rs.getInt("cID"), rs.getString("name"), rs.getString("address"), rs.getString("dob"), username);
 				}
 		} catch (SQLException e) { e.printStackTrace(); }
 		return c;

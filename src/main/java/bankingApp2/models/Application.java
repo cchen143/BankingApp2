@@ -1,21 +1,20 @@
 package bankingApp2.models;
-import java.util.*;
 
 public class Application {
 	//Application ID
-	private String appid;
-	private String acctype;
+	private int appid;
+	private String acctType;
 	private Double deposit;
 	
-	public Application(String appid, String acctype, double deposit) {
+	public Application(int appid, String acctType, double deposit) {
 		this.appid = appid;
 		this.deposit = deposit;
-		this.acctype = acctype;
+		this.acctType = acctType;
 	}
 
-	public String getAppID() { return this.appid; }
+	public int getAppID() { return this.appid; }
 	
-	public String getAcctType() { return this.acctype; }
+	public String getAcctType() { return this.acctType; }
 	
 	public double getDeposit() { return this.deposit; }
 
@@ -23,7 +22,7 @@ public class Application {
 	@Override
 	public String toString() {
 		return "Application ID: " + this.appid + "\n" +
-		       "Account Type: " + this.atype + "\n" +
+		       "Account Type: " + this.acctType + "\n" +
 		       "Deposit: " + this.deposit + "\n";
 	}
 

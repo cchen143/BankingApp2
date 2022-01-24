@@ -9,11 +9,11 @@ public class AccountsDAO extends TrackerDAO {
 		super(acctNum, accounts);
 	}
 	
-	public double exist(String acctNum) {
+	public double exist(int acctNum) {
 		Connection con = ConnectionManager.getConnection();
 		double res = -1;
 		try (PreparedStatement pstmt = con.prepareStatement(SELECT + ALL + FROM + "accounts" + WHERE + "acctNum = ?;")) {
-				pstmt.setString(1, acctNum);
+				pstmt.setInt(1, acctNum);
 				try ( ResultSet rs = pstmt.executeQuery()) {
 					if (rs.next()) res = rs.getDouble("balance");
 				}
@@ -21,17 +21,17 @@ public class AccountsDAO extends TrackerDAO {
 		return res;
 	}
 
-	public void update(Connection con, String acctNum, double balance, double amount, String type) {
+	public void update(Connection con, int acctNum, double balance, double amount, String type) {
 		//UPDATE table_name SET column1 = value1, column2 = value2, ... WHERE condition;
 		double value = (type.equals("DEPOSIT")) ? balance + amount: balance - amount;
 		try (PreparedStatement pstmt = con.prepareStatement(UPDATE + "accounts" + SET + "balance = ?" + WHERE + "acctNum = ?;")) {
 			pstmt.setDouble(1, value);
-			pstmt.setString(2, acctNum);
+			pstmt.setInt(2, acctNum);
 			pstmt.executeUpdate();
 		} catch (SQLException e) { e.printStackTrace();}
 	}
 	
-	public double printAcctInfo(String cid) {
+	public double printAcctInfo(int cid) {
 		Connection con = ConnectionManager.getConnection();
 		double totalBalance = 0;
 		try(PreparedStatement pstmt = con.prepareStatement(SELECT + "accounts.*" + FROM + "accounts"  + 
@@ -39,7 +39,7 @@ public class AccountsDAO extends TrackerDAO {
 				JOIN + "customers" + ON + " customers.cID = owners.cID" + 
 				WHERE + "customers.cID = ?")) {
 			
-			pstmt.setString(1, cid);
+			pstmt.setInt(1, cid);
 			try (ResultSet rs = pstmt.executeQuery()){
 				
 				ResultSetMetaData rsmd = rs.getMetaData();
@@ -57,9 +57,9 @@ public class AccountsDAO extends TrackerDAO {
 		return totalBalance;
 	}
 	
-	public void newAccount(Connection con, String acctNum, String acctType, double balance, boolean isjoint) {
+	public void newAccount(Connection con, int acctNum, String acctType, double balance, boolean isjoint) {
 		try (PreparedStatement pstmt = con.prepareStatement(INSERT_INTO + "accounts (acctNum, acctType, balance, isjoint)" + VALUES + "( ?, ?, ?, ?);");) {
-			pstmt.setString(1, acctNum);
+			pstmt.setInt(1, acctNum);
 			pstmt.setString(2, acctType);
 			pstmt.setDouble(3, balance);
 			pstmt.setBoolean(4, isjoint);
