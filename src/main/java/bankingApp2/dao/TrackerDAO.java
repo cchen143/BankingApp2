@@ -32,6 +32,10 @@ public abstract class TrackerDAO implements DAO {
 	
 	public void add(String element) { this.elements.add(element); }
 	
+	public void remove(String element) { this.elements.remove(element); }
+	
+	public int size() { return this.elements.size(); }
+	
 	///////TEMP
 	public void printSet() {
 		for (String e : elements) {

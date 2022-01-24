@@ -4,16 +4,16 @@ public class Employee {
 	private String eid;
 	private String name;
 	private String username;
-	private UserType eType;
+	private String eType;
 	
 	public Employee (String eid, String name, String username, String etype) {
 		this.eid = eid;
 		this.name = name;
 		this.username = username;
-		eType = (etype.equals("ADMIN")) ? UserType.ADMIN : UserType.EMPLOYEE;
+		this.eType = etype;
 	}
 	
-	public UserType getUserType() { return eType; }
+	public String getUserType() { return this.eType; }
 	
 	public String getEmployeeID() { return this.eid; }
 	public void setEmployeeID(String eid) { this.eid = eid; }

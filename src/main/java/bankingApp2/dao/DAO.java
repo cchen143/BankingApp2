@@ -4,7 +4,8 @@ import static bankingApp2.dao.Utils.*;
 import java.sql.*;
 
 public interface DAO {
-	default boolean invalidOption() { System.out.println("Invalid option.\n"); return true; }
+	
+	
 
 	default boolean exist(String table, String col, String value) {
 		Connection con = ConnectionManager.getConnection();
@@ -29,6 +30,14 @@ public interface DAO {
 				}
 				System.out.println("");
 			}
+			System.out.println("");
+		} catch (SQLException e) { e.printStackTrace(); }
+	}
+	
+	default void delete(Connection con, String col, String table, String val) {
+		try (PreparedStatement pstmt = con.prepareStatement(DELETE + FROM + table + WHERE + col + " = ?");) {
+			pstmt.setString(1, val);
+			pstmt.executeUpdate();
 		} catch (SQLException e) { e.printStackTrace(); }
 	}
 }

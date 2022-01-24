@@ -8,7 +8,7 @@ public class Customer {
 	private String address;
 	private String username;
 	
-	private final UserType cType = UserType.CUSTOMER;
+	private final String cType = "CUSTOMER";
 	
 	public Customer() { }
 	
@@ -20,7 +20,7 @@ public class Customer {
 		this.username = username;
 	}
 	
-	public UserType getUserType() {
+	public String getUserType() {
 		return this.cType;
 	}
 	

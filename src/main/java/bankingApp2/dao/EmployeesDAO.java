@@ -11,11 +11,6 @@ public class EmployeesDAO extends TrackerDAO {
 		super(col, table);
 	}
 	
-	public boolean eAcctExists() {
-		System.out.println("Employee account exists.\n");
-		return true;
-	}
-	
 	public boolean exist(String eid) {
 		Connection con = ConnectionManager.getConnection();
 		boolean res = false;
@@ -28,9 +23,8 @@ public class EmployeesDAO extends TrackerDAO {
 		return res;
 	}
 	
-	public void newEmployee(String eid, String name,String username) {
+	public void newEmployee(Connection con, String eid, String name,String username) {
 		//INSERT INTO (Cols) VALUES (vals),	    
-		Connection con = ConnectionManager.getConnection();
 		try (PreparedStatement  pstmt = con.prepareStatement(INSERT_INTO + "employees (eID, name, username)" + VALUES + "( ?, ?, ?);");) {
 			
 			pstmt.setString(1, eid);

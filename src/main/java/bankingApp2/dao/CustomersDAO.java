@@ -14,9 +14,6 @@ public class CustomersDAO extends TrackerDAO {
 	}
 	
 	// Util Functions
-	public boolean cAcctExists() { System.out.println("Customer account exists.\n"); return true; }
-	
-	public boolean cAcctNotExists() { System.out.println("Customer account does not exist.\n"); return true; }
 	
 	
 	//Data Access
@@ -32,7 +29,7 @@ public class CustomersDAO extends TrackerDAO {
 		return res;
 	}
 	
-	public boolean getCAcct(String name, String address, String dob, Customer c) {
+	public boolean getCAcct(Customer c, String name, String address, String dob) {
 		Connection con = ConnectionManager.getConnection();
 		boolean res = false;
 		try (PreparedStatement pstmt = con.prepareStatement(SELECT + ALL + FROM + "customers" + WHERE + "name = ? and address = ? and dob = ?;")) {
@@ -53,26 +50,30 @@ public class CustomersDAO extends TrackerDAO {
 		return res;
 	}
 	
-	public void newCustomer(String cid, String name, String address, String dob, String username) {
+	public void newCustomers(Connection con, Customer... cs) {
 		//INSERT INTO (Cols) VALUES (vals),	    
-		Connection con = ConnectionManager.getConnection();
 		try (PreparedStatement pstmt = con.prepareStatement(INSERT_INTO + "customers (cID, name, address, dob, username)" + VALUES + "( ?, ?, ?, ?, ?);");) {
-			
-			pstmt.setString(1, cid);
-			pstmt.setString(2, name);
-			pstmt.setString(3, address);
-			pstmt.setString(4, dob);
-			pstmt.setString(5, username);
-			pstmt.executeUpdate();
-			
+			for (Customer c : cs) {
+
+				pstmt.setString(1, c.getCID());
+				pstmt.setString(2, c.getName());
+				pstmt.setString(3, c.getAddress());
+				pstmt.setString(4, c.getDOB());
+				pstmt.setString(5, c.getUserName());
+				pstmt.addBatch();
+			}
+			pstmt.executeBatch();
 		} catch (SQLException e) { e.printStackTrace(); }
-		this.elements.add(cid);
+	}
+	
+	public void addToCs(Customer... cs) {
+		for (Customer c :cs) { this.elements.add(c.getCID()); }
 	}
 	
 	public Customer getCustomer(String username) {
 		Connection con = ConnectionManager.getConnection();
 		Customer c = null;
-		try (PreparedStatement pstmt = con.prepareStatement(SELECT + ALL + FROM + "customers" + WHERE + "customers.username = ?;")) {
+		try (PreparedStatement pstmt = con.prepareStatement(SELECT + ALL + FROM + "customers" + WHERE + "username = ?;")) {
 				pstmt.setString(1, username);
 				try ( ResultSet rs = pstmt.executeQuery()) {
 					rs.next();
@@ -82,8 +83,7 @@ public class CustomersDAO extends TrackerDAO {
 		return c;
 	}
 	
-	public void updateUsername(String name, String address, String dob, String username) { 
-		Connection con = ConnectionManager.getConnection();
+	public void updateUsername(Connection con, String name, String address, String dob, String username) { 
 		try (PreparedStatement pstmt = con.prepareStatement(UPDATE + "customers" + SET + "username = ?" + WHERE + "name = ? and address = ? and dob = ?;")) {
 			pstmt.setString(1, username);
 			pstmt.setString(2, name);

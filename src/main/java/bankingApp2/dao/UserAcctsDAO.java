@@ -13,16 +13,6 @@ public class UserAcctsDAO extends TrackerDAO {
 	public UserAcctsDAO(String col, String table) {
 		super(col,  table);
 	}
-
-	public boolean doesNotMatch() {
-		System.out.println("Incorrect username or password.\n");
-		return true;
-	}
-	
-	public boolean usernameNA() {
-		System.out.println("Username is not available.\n");
-		return true;
-	}
 	
 	public String validate(String username, String pwd) {
 		Connection con = ConnectionManager.getConnection();
@@ -37,9 +27,8 @@ public class UserAcctsDAO extends TrackerDAO {
 		return res;
 	}
 
-	public void newUser(String username, String pwd, String type) {
+	public void newUser(Connection con, String username, String pwd, String type) {
 		//INSERT INTO (Cols) VALUES (vals),	    
-		Connection con = ConnectionManager.getConnection();
 		try (PreparedStatement pstmt = con.prepareStatement(INSERT_INTO + "useraccts (username, pwd, usertype)" + VALUES + "( ?, ?, ?);");) {
 			pstmt.setString(1, username);
 			pstmt.setString(2, pwd);
@@ -48,7 +37,15 @@ public class UserAcctsDAO extends TrackerDAO {
 		} catch (SQLException e) { e.printStackTrace(); } 
 		
 		// add new username to set when an user account is created.
-	super.elements.add(username);
 	}
+	
+	public void addToUs(Customer... cs) {
+		for (Customer c: cs) {
+			this.elements.add(c.getUserName());
+		}
+	}
+	
+	@Override
+	public String randInt() { return "Not in use.\n"; }
 	
 }

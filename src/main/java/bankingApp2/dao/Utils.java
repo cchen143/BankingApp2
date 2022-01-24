@@ -4,12 +4,8 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Formatter;
+import java.util.Scanner;
 
 public class Utils {
 	public static final String SELECT = "SELECT ";
@@ -63,8 +59,64 @@ public class Utils {
             throw new IllegalArgumentException("System does not support SHA-1");
         }
     }
+
+
+	public static boolean doesNotMatch() { System.out.println("Incorrect username or password.\n"); return true; }
+	
+	public static boolean usernameNA() { System.out.println("Username is not available.\n"); return true; }
+	
+	public static boolean eAcctExists() { System.out.println("Employee account exists.\n"); return true; }
+	
+	public static boolean cAcctNotExists() { System.out.println("Customer account does not exist.\n"); return true; }
+	
+	public static boolean invalidAmount() { System.out.println("Invalid amount.\n"); return true; }
+	
+	public static boolean invalidOption() { System.out.println("Invalid option.\n"); return true; }
+	
+	public static boolean appNotExists() { System.out.println("Application does not exist.\n"); return true; }
+
+	public static boolean isPosNum(String str) { return str.matches("[1-9]\\d*(\\.*\\d*)?") || str.matches("0\\.\\d*[1-9]"); }
+	
+	public static String choose2(Scanner sc, String opt) {
+		String res;
+		do {
+			System.out.println(opt);
+			res = sc.nextLine();
+		} while (!(res.equals("1") || res.equals("2")) && invalidOption());
+		return res;
+	}
+	
+	public static String choose3(Scanner sc, String opt) {
+		String res;
+		do {
+			System.out.println(opt);
+			res = sc.nextLine();
+		} while (!(res.equals("1") || res.equals("2") || res.equals("3")) && invalidOption());
+		return res;
+	}
+	
+	public static String choose6(Scanner sc, String opt) {
+		String res;
+		do {
+			System.out.println(opt);
+			res = sc.nextLine();
+		} while (!(res.equals("1") || res.equals("2") || res.equals("3") || res.equals("4") || res.equals("5") || res.equals("6")) && invalidOption());
+		return res;
+	}
+	
+	public static String choose7(Scanner sc, String opt) {
+		String res;
+		do {
+			System.out.println(opt);
+			res = sc.nextLine();
+		} while (!(res.equals("1") || res.equals("2") || res.equals("3") || res.equals("4") || res.equals("5") || res.equals("6") || res.equals("7")) && invalidOption());
+		return res;
+	}
 	
 	
+	
+	//////NOT IN USE
+	/*
 	//set a condition by strings
 	public static String setCondVal(String ... strs) {
 		StringBuilder sb = new StringBuilder();
@@ -95,13 +147,5 @@ public class Utils {
 			sb.append(", " + strs[i]);
 		}
 		return sb.toString();
-	}
-	
-	public static boolean isPosNum(String str) {
-		  return str.matches("[1-9]\\d*(\\.*\\d*)?") || str.matches("0\\.\\d*[1-9]");
-	}
-	
-	
-	
-	
+	}*/
 }
