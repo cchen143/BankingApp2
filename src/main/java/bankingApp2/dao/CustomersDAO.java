@@ -67,7 +67,7 @@ public class CustomersDAO extends TrackerDAO<Integer> {
 		try (PreparedStatement pstmt = con.prepareStatement(INSERT_INTO + "customers (cID, name, address, dob, username)" + VALUES + "( ?, ?, ?, ?, ?);");) {
 			for (Customer c : cs) {
 				if (c.getCID() == -1 ) {
-					pstmt.setInt(1, c.getCID());
+					pstmt.setInt(1, randInt());
 					pstmt.setString(2, c.getName());
 					pstmt.setString(3, c.getAddress());
 					pstmt.setString(4, c.getDOB());

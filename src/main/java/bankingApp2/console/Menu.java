@@ -59,7 +59,7 @@ public class Menu {
 			System.out.println("Date of Birth: ");
 			String dob = sc.nextLine();
 
-			Customer c = null;
+			Customer c = new Customer();
 			boolean CE = cust.getCAcct(c, name, address, dob), UE = CE && c.getUserName() != null;
 			if (CE && UE) { System.out.println("Account exists."); return; }
 
