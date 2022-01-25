@@ -60,7 +60,7 @@ public class Menu {
 			String dob = sc.nextLine();
 
 			Customer c = null;
-			boolean CE = cust.getCAcct(c, name, address, dob), UE = c.getUserName() != null;
+			boolean CE = cust.getCAcct(c, name, address, dob), UE = CE && c.getUserName() != null;
 			if (CE && UE) { System.out.println("Account exists."); return; }
 
 			if (!UE) {
@@ -131,7 +131,8 @@ public class Menu {
 	}
 
 	void signin(Scanner sc) throws SQLException {
-
+		if (user.size() == 0) {System.out.println("No user in the system.\n"); return; }
+		
 		String username, pwd, type = "";
 		do {
 			System.out.println("Username: ");

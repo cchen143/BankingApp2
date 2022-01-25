@@ -1,26 +1,18 @@
 package bankingApp2.dao;
 
-import static bankingApp2.dao.Utils.ALL;
-import static bankingApp2.dao.Utils.FROM;
-import static bankingApp2.dao.Utils.INSERT_INTO;
-import static bankingApp2.dao.Utils.SELECT;
-import static bankingApp2.dao.Utils.VALUES;
-import static bankingApp2.dao.Utils.WHERE;
+import static bankingApp2.dao.Utils.*;
+import java.sql.*;
+import java.util.HashSet;
+import java.util.Set;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import bankingApp2.models.Customer;
 
 //joint table; customers and applications
 public class ApplicantsDAO implements DAO {
-	List<Customer> temp;
+	Set<Customer> temp;
 	
 	public ApplicantsDAO() {
-		this.temp = new ArrayList<>();
+		this.temp = new HashSet<>();
 	}
 	
 	public void add(Customer c) { this.temp.add(c); }
@@ -40,6 +32,7 @@ public class ApplicantsDAO implements DAO {
 		} catch (SQLException e) { e.printStackTrace(); }
 	}
 	
+	//
 	public Customer[] getApplicants() { return this.temp.toArray(new Customer[temp.size()]); }
 	
 	public void cacheApplicants(Connection con, int appID) {
@@ -53,30 +46,12 @@ public class ApplicantsDAO implements DAO {
 		} catch (SQLException e) { e.printStackTrace(); }
 	}
 	
-	public boolean addToTemp(CustomersDAO cust, String... cs) {
-		Connection con = ConnectionManager.getConnection();
-		boolean res = false;
-		try (PreparedStatement pstmt = con.prepareStatement(SELECT + ALL + FROM + "customers" + WHERE + "name = ? and address = ? and dob = ?;")) {
-			for (int i = 0; i < cs.length; i += 3) {
-				pstmt.setString(1, cs[i]);
-				pstmt.setString(2, cs[i + 1]);
-				pstmt.setString(3, cs[i + 2]);
-				try ( ResultSet rs = pstmt.executeQuery()) {
-					boolean flag = rs.next();
-					res =  res | flag;
-					if (flag) {
-						this.temp.add( new Customer(rs.getInt("cid"), rs.getString("name"), rs.getString("address"),  rs.getString("dob"), rs.getString("username")));
-					} else {
-						this.temp.add( new Customer(-1, cs[i], cs[i + 1],  cs[i + 2], null));
-					}
-				}
-			}
-		} catch (SQLException e) { e.printStackTrace(); }
-		return res;
-	}
+	
+	
+	public boolean check(Customer c) { return this.temp.contains(c); }
 	
 	public void removeAll() {
-		this.temp = new ArrayList<>();
+		this.temp = new HashSet<>();
 	}
 	
 }

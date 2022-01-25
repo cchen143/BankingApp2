@@ -18,11 +18,9 @@ public class CustomersDAO extends TrackerDAO<Integer> {
 	public boolean exist(String name, String address, String dob) {
 		Connection con = ConnectionManager.getConnection();
 		boolean res = false;
-		try (PreparedStatement pstmt = con.prepareStatement(SELECT + ALL + FROM + "customers" + WHERE + " name = ? and address = ? and dob = ?;")) {
-			pstmt.setString(1, name);
-			pstmt.setString(2, address);
-			pstmt.setString(3, dob);
-			try (ResultSet rs = pstmt.executeQuery()) { res = rs.next(); } 
+		try (Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery(SELECT + ALL + FROM + "customers" + WHERE + "name = " + name + " and address = " + address + " and dob = " + dob + ";")) {
+			res = rs.next();
 		} catch (SQLException e) { e.printStackTrace(); }
 		return res;
 	}

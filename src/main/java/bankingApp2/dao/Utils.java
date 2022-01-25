@@ -40,74 +40,80 @@ public class Utils {
 	public static final String APPNOTEXISTS = "Application does not exist.\n"; 
 	
 	public static final String INVALIDINPUT = "Invalid input.\n";
-	
-	public static boolean errFunc(String errormessage) { System.out.println(errormessage); return true; }
 
 	public static boolean isPNum(String str) { return str.matches("[1-9]\\d*(\\.*\\d*)?") || str.matches("0\\.\\d*[1-9]"); }
 	
 	public static boolean isPInt(String str) { return str.matches("[1-9]\\d*"); }
 	
-	public static String choose2(Scanner sc, String opt, boolean errFunc) {
+	public static String choose2(Scanner sc, String opt, String err) {
 		String res;
 		do {
 			System.out.println(opt);
 			res = sc.nextLine();
-		} while (!(res.equals("1") || res.equals("2")) && errFunc);
+			if (!(res.equals("1") || res.equals("2"))) System.out.println(err);
+		} while (!(res.equals("1") || res.equals("2")));
 		return res;
 	}
 	
-	public static String choose3(Scanner sc, String opt, boolean errFunc) {
+	public static String choose3(Scanner sc, String opt, String err) {
+		
 		String res;
 		do {
 			System.out.println(opt);
 			res = sc.nextLine();
-		} while (!(res.equals("1") || res.equals("2") || res.equals("3")) && errFunc);
+			if (!(res.equals("1") || res.equals("2") || res.equals("3"))) System.out.println(err);
+		} while (!(res.equals("1") || res.equals("2") || res.equals("3")));
 		return res;
 	}
 	
-	public static String choose6(Scanner sc, String opt, boolean errFunc) {
+	public static String choose6(Scanner sc, String opt, String err) {
 		String res;
 		do {
 			System.out.println(opt);
 			res = sc.nextLine();
-		} while (!(res.equals("1") || res.equals("2") || res.equals("3") || res.equals("4") || res.equals("5") || res.equals("6")) && errFunc);
+			if (!(res.equals("1") || res.equals("2") || res.equals("3") || res.equals("4") || res.equals("5") || res.equals("6"))) System.out.println(err);
+		} while (!(res.equals("1") || res.equals("2") || res.equals("3") || res.equals("4") || res.equals("5") || res.equals("6")));
 		return res;
 	}
 	
-	public static String choose7(Scanner sc, String opt, boolean errFunc) {
+	public static String choose7(Scanner sc, String opt, String err) {
 		String res;
 		do {
 			System.out.println(opt);
 			res = sc.nextLine();
-		} while (!(res.equals("1") || res.equals("2") || res.equals("3") || res.equals("4") || res.equals("5") || res.equals("6") || res.equals("7")) && errFunc);
+			if (!(res.equals("1") || res.equals("2") || res.equals("3") || res.equals("4") || res.equals("5") || res.equals("6") || res.equals("7"))) System.out.println(err);
+		} while (!(res.equals("1") || res.equals("2") || res.equals("3") || res.equals("4") || res.equals("5") || res.equals("6") || res.equals("7")));
 		return res;
 	}
 	
-	public static int getPInt(Scanner sc, String text, boolean errFunc) {
+	public static int getPInt(Scanner sc, String text, String err) {
 		String temp = "";
 		do {
 			System.out.println(text);
 			temp = sc.nextLine();
-		} while (isPInt(temp) && errFunc);
+			if (isPInt(temp)) System.out.println(err);
+		} while (isPInt(temp));
 		return Integer.parseInt(temp);
 	}
 	
-	public static double getPNum(Scanner sc, String text, boolean errFunc) {
+	public static double getPNum(Scanner sc, String text, String err) {
 		String temp = "";
 		do {
 			System.out.println(text);
 			temp = sc.nextLine();
-		} while (isPInt(temp) && errFunc);
+			if (isPNum(temp)) System.out.println(err);
+		} while (isPNum(temp));
 		return Double.parseDouble(temp);
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static String getOneInput(Scanner sc, String text, TrackerDAO dao, boolean errFunc) {
+	public static String getOneInput(Scanner sc, String text, TrackerDAO dao, String err) {
 		String res = "";
 		do {
 			System.out.println(text);
 			res = sc.nextLine();
-		} while (res.equals("") && dao.check(res) && errFunc);
+			if (res.equals("") && dao.check(res)) System.out.println(err);
+		} while (res.equals("") && dao.check(res));
 		return res;
 	}
 	
@@ -185,3 +191,4 @@ public class Utils {
     }
 	}*/
 }
+

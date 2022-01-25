@@ -49,4 +49,18 @@ public class Customer {
 			   "Username: " + this.username + "\n";
 				
 	}
+	
+	@Override
+	public int hashCode() {
+		return this.name.hashCode() ^ this.address.hashCode() ^ this.dob.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		boolean res = true;
+		res = res && this.name.equals(((Customer) other).getName());
+		res = res && this.address.equals(((Customer) other).getAddress());
+		res = res && this.dob.equals(((Customer) other).getDOB());
+		return res;
+	}
 }

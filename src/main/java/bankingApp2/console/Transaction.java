@@ -1,8 +1,6 @@
 package bankingApp2.console;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 import bankingApp2.dao.*;
 import bankingApp2.models.Application;
@@ -82,22 +80,27 @@ public class Transaction {
 
 		String option = choose2(sc, "1. SINGLE | 2. JOINT: ", errFunc(INVALIDOPTION)), name, address, dob;
 		option = (option.equals("1")) ? "SINGLE" : "JOINT";
-		List<String> info = new ArrayList<>();
 		if (option.equals("JOINT")) {
 			String flag = "Enter information of co-owners.";
 			System.out.println(flag);
 			while (!flag.equals("q")) {
 				Customer temp = new Customer();
 				System.out.println("Name: ");
-				info.add(sc.nextLine());
+				name = sc.nextLine();
 				System.out.println("Address: ");
-				info.add(sc.nextLine());
+				address = sc.nextLine();
 				System.out.println("Date of Birth: ");
-				info.add(sc.nextLine());
+				dob = sc.nextLine();
 				System.out.println("Enter q to quit.");
 				flag = sc.nextLine();
+				Customer tc = new Customer();
+				if (!cust.getCAcct(tc, name, address, dob)) tc = new Customer(-1, name, address, dob, null);
+				if (apc.check(tc)) {
+					System.out.println("Duplicate applicant.\n");
+					continue;
+				}
+				apc.add(tc);
 			}
-			apc.addToTemp(info.toArray(new String[info.size()]));
 		}
 		
 		String type = choose2(sc, "1. CHECKING | 2. SAVING: ", errFunc(INVALIDOPTION));
