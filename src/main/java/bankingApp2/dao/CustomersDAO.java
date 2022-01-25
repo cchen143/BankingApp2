@@ -108,4 +108,18 @@ public class CustomersDAO extends TrackerDAO<Integer> {
 		} catch (SQLException e) { e.printStackTrace();}
 	}
 	
+	//--------------------------------------------API-----------------------------------------------//
+		public boolean exist(String val) {
+			Connection con = ConnectionManager.getConnection();
+			boolean res = false;
+			try (PreparedStatement pstmt = con.prepareStatement(SELECT + ALL + FROM + "customers" + WHERE + "name" + " = ?;")) {
+				pstmt.setString(1, val);
+				try (ResultSet rs = pstmt.executeQuery()) { res = rs.next(); } 
+			} catch (SQLException e) { e.printStackTrace(); }
+			return res;
+		}
+	
 }
+
+
+

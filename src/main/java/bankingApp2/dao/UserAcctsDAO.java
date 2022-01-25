@@ -2,8 +2,11 @@ package bankingApp2.dao;
 
 import static bankingApp2.dao.Utils.*;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import bankingApp2.models.Customer;
+import bankingApp2.models.UserAcct;
 
 public class UserAcctsDAO extends TrackerDAO<String> {
 	
@@ -52,5 +55,28 @@ public class UserAcctsDAO extends TrackerDAO<String> {
 		} catch (SQLException e) { e.printStackTrace(); }
 		return res;
 	}
+	
+	public List<UserAcct> getAllUserAccts () {
+		Connection con = ConnectionManager.getConnection();
+		List<UserAcct> users = new ArrayList<>();
+		try (Statement pstmt = con.createStatement();
+				ResultSet rs = pstmt.executeQuery(SELECT + ALL + FROM + "useraccts" + ";")) { 
+			while(rs.next()) {
+				users.add(new UserAcct(rs.getString("username"), rs.getString("pwd"), rs.getString("usertype")));
+			}
+		} catch (SQLException e) { e.printStackTrace(); }
+		return users;
+	}
+	
+	public void resetPWD(String username, String pwd) {
+		Connection con = ConnectionManager.getConnection();
+		try (PreparedStatement pstmt = con.prepareStatement(UPDATE + "useraccts" + SET + "pwd = ?" + WHERE + "username = ?;")) {
+			pstmt.setString(1, pwd);
+			pstmt.setString(2, username);
+			pstmt.executeUpdate();
+		} catch (SQLException e) { e.printStackTrace();}
+	}
+	
+	
 	
 }

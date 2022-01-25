@@ -2,16 +2,21 @@ package bankingApp2.dao;
 
 import static bankingApp2.dao.Utils.*;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import bankingApp2.models.UserAcct;
 
 public interface DAO {
 	
 	
 
-	default boolean exist(String table, String col, int value) {
+	default boolean exist(String table, String col, Object val) {
 		Connection con = ConnectionManager.getConnection();
 		boolean res = false;
 		try (PreparedStatement pstmt = con.prepareStatement(SELECT + ALL + FROM + table + WHERE + col + " = ?;")) {
-			pstmt.setInt(1, value);
+			if (val instanceof Integer) pstmt.setInt(1,(Integer) val);
+			else pstmt.setString(1, (String) val);
 			try (ResultSet rs = pstmt.executeQuery()) { res = rs.next(); } 
 		} catch (SQLException e) { e.printStackTrace(); }
 		return res;
@@ -34,10 +39,15 @@ public interface DAO {
 		} catch (SQLException e) { e.printStackTrace(); }
 	}
 	
-	default void delete(Connection con, String col, String table, int val) {
+	default void delete(Connection con, String col, String table, Object val) {
 		try (PreparedStatement pstmt = con.prepareStatement(DELETE + FROM + table + WHERE + col + " = ?");) {
-			pstmt.setInt(1, val);
+			if (val instanceof Integer) pstmt.setInt(1,(Integer) val);
+			else pstmt.setString(1, (String) val);
 			pstmt.executeUpdate();
 		} catch (SQLException e) { e.printStackTrace(); }
 	}
+	
+	
+	//--------------------------------------------API-----------------------------------------------//
+	
 }
