@@ -6,17 +6,18 @@ import java.util.Set;
 
 import static bankingApp2.dao.Utils.*;
 
-public abstract class TrackerDAO implements DAO {
+public abstract class TrackerDAO<T> implements DAO {
 	
-	protected Set<Integer> elements;
+	protected Set<T> elements;
 	
+	@SuppressWarnings("unchecked")
 	public TrackerDAO(String col, String table) {
-		elements = new HashSet<Integer>();
+		elements = new HashSet<T>();
 		Connection con = ConnectionManager.getConnection();
 		try (Statement stmt = con.createStatement();
 				ResultSet rs = stmt.executeQuery(SELECT + col + FROM + table + " ;")) {
 			while (rs.next()) {
-				elements.add(rs.getInt(col));
+				elements.add((T) rs.getObject(col));
 			}
 		} catch (SQLException e) { e.printStackTrace(); }
 	}
@@ -28,18 +29,18 @@ public abstract class TrackerDAO implements DAO {
 		return element;
 	}
 	
-	public boolean checkElement(int element) { return this.elements.contains(element); }
+	public boolean check(T element) { return this.elements.contains(element); }
 	
 	//addToTemp
-	public void add(int element) { this.elements.add(element); }
+	public void add(T element) { this.elements.add(element); }
 	
-	public void remove(int element) { this.elements.remove(element); }
+	public void remove(T element) { this.elements.remove(element); }
 	
 	public int size() { return this.elements.size(); }
 	
 	///////TEMP
 	public void printSet() {
-		for (int e : elements) {
+		for (T e : elements) {
 			System.out.println(e);
 		}
 	}

@@ -64,7 +64,7 @@ public class Transaction {
 		try {
 			con.setAutoCommit(false);
 			acct.update(con, acctNum1, balance, amt, "WITHDRAW");
-			acct.update(con, acctNum2, balance, amt, "DEPOSIT");
+			acct.update(con, acctNum2, balance2, amt, "DEPOSIT");
 			con.commit();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

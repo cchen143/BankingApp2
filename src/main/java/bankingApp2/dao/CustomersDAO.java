@@ -3,8 +3,6 @@ package bankingApp2.dao;
 import static bankingApp2.dao.Utils.*;
 
 import java.sql.*;
-import java.util.HashSet;
-import java.util.Set;
 import bankingApp2.models.Customer;
 	
 public class CustomersDAO extends TrackerDAO {
@@ -70,7 +68,7 @@ public class CustomersDAO extends TrackerDAO {
 		//INSERT INTO (Cols) VALUES (vals),	    
 		try (PreparedStatement pstmt = con.prepareStatement(INSERT_INTO + "customers (cID, name, address, dob, username)" + VALUES + "( ?, ?, ?, ?, ?);");) {
 			for (Customer c : cs) {
-				if (c.getCID()  == -1 ) {
+				if (c.getCID() == -1 ) {
 					pstmt.setInt(1, c.getCID());
 					pstmt.setString(2, c.getName());
 					pstmt.setString(3, c.getAddress());

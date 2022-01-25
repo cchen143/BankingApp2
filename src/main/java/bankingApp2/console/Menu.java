@@ -29,7 +29,7 @@ public class Menu {
 	void main(Scanner sc, Connection con) throws SQLException {
 
 		while (true) {
-			String option = choose3(sc, "1. Sign up | 2. Sign in | 3. Exit: ");
+			String option = choose3(sc, "1. Sign up | 2. Sign in | 3. Exit: ", errFunc(INVALIDOPTION));
 			switch (option) {
 			case "1": 
 				signup(sc);
@@ -46,7 +46,7 @@ public class Menu {
 	}
 
 	void signup(Scanner sc) throws SQLException {
-		String option = choose2(sc, "1. Customer | 2. Employee: "), name, username, pwd;
+		String option = choose2(sc, "1. Customer | 2. Employee: ", errFunc(INVALIDOPTION)), name, username, pwd;
 
 		switch (option) {
 		case "1": 
@@ -64,10 +64,9 @@ public class Menu {
 			if (CE && UE) { System.out.println("Account exists."); return; }
 
 			if (!UE) {
-				do {
-					System.out.println("Username: ");
-					username = sc.nextLine();
-				} while (username.equals("") && user.check(username) && usernameNA());
+				
+				username = getOneInput(sc, "Username: ", user, errFunc(USERNAMENA));
+				
 				System.out.println("Password: ");
 				pwd = sc.nextLine();
 
@@ -97,23 +96,17 @@ public class Menu {
 			break;
 
 		case "2":
-			String type = choose2(sc, "1. ADMIN | 2. EMPLOYEE: ");
+			String type = choose2(sc, "1. ADMIN | 2. EMPLOYEE: ", errFunc(INVALIDOPTION));
 			type = (type.equals("1")) ? "ADMIN" : "EMPLOYEE";
 
-			System.out.println("Employee ID: ");
-			int eid = isPosInt(sc.nextLine());
+			int eid = getPInt(sc, "Employee ID: ", errFunc(INVALIDINPUT));
 			
-			if (emp.checkElement(eid) && eAcctExists()) return;
+			if (emp.check(eid) && errFunc(EACCTEXISTS)) return;
 
 			System.out.println("Full name: ");
 			name = sc.nextLine();
 
-			do {
-				System.out.println("Username: ");
-				username = sc.nextLine();
-			} while (user.check(username) && usernameNA());
-
-
+			username = getOneInput(sc, "Username: ", user, errFunc(USERNAMENA));
 
 			System.out.println("Password: ");
 			pwd = sc.nextLine();
@@ -146,13 +139,13 @@ public class Menu {
 			System.out.println("Password: ");
 			pwd = sc.nextLine();
 			type = user.validate(username, pwd);
-		} while (type.equals("") && doesNotMatch());
+		} while (type.equals("") && errFunc(DOESNOTMATCH));
 
 		while (true) {
 			switch (type) {
 			case "CUSTOMER":
 				Customer c = cust.getCustomer(username);
-				String option = choose6(sc, "1. Apply | 2. Withdraw | 3. Deposit | 4. Transfer | 5. View Statement | 6. Exit: ");
+				String option = choose6(sc, "1. Apply | 2. Withdraw | 3. Deposit | 4. Transfer | 5. View Statement | 6. Exit: ", errFunc(INVALIDOPTION));
 				switch(option) {
 				case "1":
 					Transaction.apply(sc, c, app, apc, cust);
@@ -178,7 +171,7 @@ public class Menu {
 				break;
 
 			case "EMPLOYEE":
-				String option2 = choose3(sc, "1. Review | 2. View Customer Info | 3. Exit: ");
+				String option2 = choose3(sc, "1. Review | 2. View Customer Info | 3. Exit: ", errFunc(INVALIDOPTION));
 				switch(option2) {
 				case "1":
 					Transaction.review(sc, app, apc, acct, own, cust);
@@ -191,7 +184,7 @@ public class Menu {
 				}
 				break;
 			default:
-				String option3 = choose7(sc, "1. Review | 2. View Customer Info | 3. Withdraw | 4. Deposit | 5. Transfer | 6. Close Account | 7. Exit: ");
+				String option3 = choose7(sc, "1. Review | 2. View Customer Info | 3. Withdraw | 4. Deposit | 5. Transfer | 6. Close Account | 7. Exit: ", errFunc(INVALIDOPTION));
 				switch(option3) {
 				case "1":
 					Transaction.review(sc, app, apc, acct, own, cust);

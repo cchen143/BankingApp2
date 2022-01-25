@@ -2,25 +2,13 @@ package bankingApp2.dao;
 
 import static bankingApp2.dao.Utils.*;
 import java.sql.*;
-import java.util.HashSet;
-import java.util.Set;
 
 import bankingApp2.models.Customer;
-import bankingApp2.models.Employee;
 
-public class UserAcctsDAO {
-	
-	protected Set<String> elements;
+public class UserAcctsDAO extends TrackerDAO<String> {
 	
 	public UserAcctsDAO(String col, String table) {
-		elements = new HashSet<String>();
-		Connection con = ConnectionManager.getConnection();
-		try (Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery(SELECT + col + FROM + table + " ;")) {
-			while (rs.next()) {
-				elements.add(rs.getString(col));
-			}
-		} catch (SQLException e) { e.printStackTrace(); }
+		super(col, table);
 	}
 	
 	public String validate(String username, String pwd) {
@@ -53,7 +41,5 @@ public class UserAcctsDAO {
 			this.elements.add(c.getUserName());
 		}
 	}
-	
-	public boolean check(String username) { return this.elements.contains(username); }
 	
 }

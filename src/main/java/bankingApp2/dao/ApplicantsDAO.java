@@ -13,8 +13,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import bankingApp2.models.Application;
 import bankingApp2.models.Customer;
 
 //joint table; customers and applications
@@ -55,7 +53,7 @@ public class ApplicantsDAO implements DAO {
 		} catch (SQLException e) { e.printStackTrace(); }
 	}
 	
-	public boolean addToTemp(String... cs) {
+	public boolean addToTemp(CustomersDAO cust, String... cs) {
 		Connection con = ConnectionManager.getConnection();
 		boolean res = false;
 		try (PreparedStatement pstmt = con.prepareStatement(SELECT + ALL + FROM + "customers" + WHERE + "name = ? and address = ? and dob = ?;")) {
@@ -77,7 +75,8 @@ public class ApplicantsDAO implements DAO {
 		return res;
 	}
 	
-	public void clearTemp() {
+	public void removeAll() {
 		this.temp = new ArrayList<>();
 	}
+	
 }
