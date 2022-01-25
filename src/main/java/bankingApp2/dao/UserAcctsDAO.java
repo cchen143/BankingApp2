@@ -42,4 +42,15 @@ public class UserAcctsDAO extends TrackerDAO<String> {
 		}
 	}
 	
+	//--------------------------------------------API-----------------------------------------------//
+	public boolean exist(String val) {
+		Connection con = ConnectionManager.getConnection();
+		boolean res = false;
+		try (PreparedStatement pstmt = con.prepareStatement(SELECT + ALL + FROM + "useraccts" + WHERE + "username" + " = ?;")) {
+			pstmt.setString(1, val);
+			try (ResultSet rs = pstmt.executeQuery()) { res = rs.next(); } 
+		} catch (SQLException e) { e.printStackTrace(); }
+		return res;
+	}
+	
 }
