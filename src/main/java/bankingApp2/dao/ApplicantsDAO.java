@@ -54,4 +54,5 @@ public class ApplicantsDAO implements DAO {
 		this.temp = new HashSet<>();
 	}
 	
+	public int size() { return this.temp.size(); }
 }

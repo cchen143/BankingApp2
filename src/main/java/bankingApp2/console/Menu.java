@@ -29,7 +29,7 @@ public class Menu {
 	void main(Scanner sc, Connection con) throws SQLException {
 
 		while (true) {
-			String option = choose3(sc, "1. Sign up | 2. Sign in | 3. Exit: ", errFunc(INVALIDOPTION));
+			String option = choose3(sc, "1. Sign up | 2. Sign in | 3. Exit: ", INVALIDOPTION);
 			switch (option) {
 			case "1": 
 				signup(sc);
@@ -46,7 +46,7 @@ public class Menu {
 	}
 
 	void signup(Scanner sc) throws SQLException {
-		String option = choose2(sc, "1. Customer | 2. Employee: ", errFunc(INVALIDOPTION)), name, username, pwd;
+		String option = choose2(sc, "1. Customer | 2. Employee: ", INVALIDOPTION), name, username, pwd;
 
 		switch (option) {
 		case "1": 
@@ -65,7 +65,7 @@ public class Menu {
 
 			if (!UE) {
 				
-				username = getOneInput(sc, "Username: ", user, errFunc(USERNAMENA));
+				username = getOneInput(sc, "Username: ", user, USERNAMENA);
 				
 				System.out.println("Password: ");
 				pwd = sc.nextLine();
@@ -96,17 +96,17 @@ public class Menu {
 			break;
 
 		case "2":
-			String type = choose2(sc, "1. ADMIN | 2. EMPLOYEE: ", errFunc(INVALIDOPTION));
+			String type = choose2(sc, "1. ADMIN | 2. EMPLOYEE: ", INVALIDOPTION);
 			type = (type.equals("1")) ? "ADMIN" : "EMPLOYEE";
 
-			int eid = getPInt(sc, "Employee ID: ", errFunc(INVALIDINPUT));
+			int eid = getPInt(sc, "Employee ID: ", INVALIDINPUT);
 			
 			if (emp.check(eid) && errFunc(EACCTEXISTS)) return;
 
 			System.out.println("Full name: ");
 			name = sc.nextLine();
 
-			username = getOneInput(sc, "Username: ", user, errFunc(USERNAMENA));
+			username = getOneInput(sc, "Username: ", user, USERNAMENA);
 
 			System.out.println("Password: ");
 			pwd = sc.nextLine();
@@ -146,7 +146,7 @@ public class Menu {
 			switch (type) {
 			case "CUSTOMER":
 				Customer c = cust.getCustomer(username);
-				String option = choose6(sc, "1. Apply | 2. Withdraw | 3. Deposit | 4. Transfer | 5. View Statement | 6. Exit: ", errFunc(INVALIDOPTION));
+				String option = choose6(sc, "1. Apply | 2. Withdraw | 3. Deposit | 4. Transfer | 5. View Statement | 6. Exit: ", INVALIDOPTION);
 				switch(option) {
 				case "1":
 					Transaction.apply(sc, c, app, apc, cust);
@@ -172,7 +172,7 @@ public class Menu {
 				break;
 
 			case "EMPLOYEE":
-				String option2 = choose3(sc, "1. Review | 2. View Customer Info | 3. Exit: ", errFunc(INVALIDOPTION));
+				String option2 = choose3(sc, "1. Review | 2. View Customer Info | 3. Exit: ", INVALIDOPTION);
 				switch(option2) {
 				case "1":
 					Transaction.review(sc, app, apc, acct, own, cust);
@@ -185,7 +185,7 @@ public class Menu {
 				}
 				break;
 			default:
-				String option3 = choose7(sc, "1. Review | 2. View Customer Info | 3. Withdraw | 4. Deposit | 5. Transfer | 6. Close Account | 7. Exit: ", errFunc(INVALIDOPTION));
+				String option3 = choose7(sc, "1. Review | 2. View Customer Info | 3. Withdraw | 4. Deposit | 5. Transfer | 6. Close Account | 7. Exit: ", INVALIDOPTION);
 				switch(option3) {
 				case "1":
 					Transaction.review(sc, app, apc, acct, own, cust);

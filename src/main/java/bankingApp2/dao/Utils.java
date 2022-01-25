@@ -40,6 +40,8 @@ public class Utils {
 	public static final String APPNOTEXISTS = "Application does not exist.\n"; 
 	
 	public static final String INVALIDINPUT = "Invalid input.\n";
+	
+	public static boolean errFunc(String errormessage) { System.out.println(errormessage); return true; }
 
 	public static boolean isPNum(String str) { return str.matches("[1-9]\\d*(\\.*\\d*)?") || str.matches("0\\.\\d*[1-9]"); }
 	
@@ -91,8 +93,8 @@ public class Utils {
 		do {
 			System.out.println(text);
 			temp = sc.nextLine();
-			if (isPInt(temp)) System.out.println(err);
-		} while (isPInt(temp));
+			if (!isPInt(temp)) System.out.println(err);
+		} while (!isPInt(temp));
 		return Integer.parseInt(temp);
 	}
 	
@@ -101,8 +103,8 @@ public class Utils {
 		do {
 			System.out.println(text);
 			temp = sc.nextLine();
-			if (isPNum(temp)) System.out.println(err);
-		} while (isPNum(temp));
+			if (!isPNum(temp)) System.out.println(err);
+		} while (!isPNum(temp));
 		return Double.parseDouble(temp);
 	}
 	

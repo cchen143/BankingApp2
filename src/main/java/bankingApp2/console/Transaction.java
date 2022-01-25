@@ -9,10 +9,10 @@ import static bankingApp2.dao.Utils.*;
 public class Transaction {
 
 	static void withdraw(Scanner sc, AccountsDAO acct) {
-		int acctNum = getPInt(sc, "Account Number: ", errFunc(INVALIDINPUT));
+		int acctNum = getPInt(sc, "Account Number: ", INVALIDINPUT);
 		double balance = acct.exist(acctNum);
 		if ( balance == -1) { System.out.println("Invalid acoount number.\n"); return; }
-		double amt = getPNum(sc, "Amount: ", errFunc(INVALIDAMOUNT));
+		double amt = getPNum(sc, "Amount: ", INVALIDAMOUNT);
 		if (balance < amt) { System.out.println("Not enough balance.\n"); return; }
 		Connection con = ConnectionManager.getConnection();
 		acct.update(con, acctNum, balance, amt, "WITHDRAW");
@@ -20,26 +20,26 @@ public class Transaction {
 	}
 
 	static void deposit(Scanner sc, AccountsDAO acct) {
-		int acctNum = getPInt(sc, "Account Number: ", errFunc(INVALIDINPUT));
+		int acctNum = getPInt(sc, "Account Number: ", INVALIDINPUT);
 		double balance = acct.exist(acctNum);
 		if ( balance == -1) {
 			System.out.println("Invalid acoount number.\n");
 			return;
 		}
-		double amt = getPNum(sc, "Amount: ", errFunc(INVALIDAMOUNT));
+		double amt = getPNum(sc, "Amount: ", INVALIDAMOUNT);
 		
 		Connection con = ConnectionManager.getConnection();
 		acct.update(con, acctNum, balance, amt, "DEPOSIT");
 	}
 
 	static void transfer(Scanner sc, AccountsDAO acct) {
-		int acctNum1 = getPInt(sc, "From Account Number: ", errFunc(INVALIDINPUT));
-		int acctNum2 = getPInt(sc, "To Account Number: ", errFunc(INVALIDINPUT));
+		int acctNum1 = getPInt(sc, "From Account Number: ", INVALIDINPUT);
+		int acctNum2 = getPInt(sc, "To Account Number: ", INVALIDINPUT);
 
 		double balance = acct.exist(acctNum1), balance2 = acct.exist(acctNum2);
 		if (balance < 0 || balance2 < 0) { System.out.println("Invalid account number.\n"); return; }
 
-		double amt = getPNum(sc, "Amount: ", errFunc(INVALIDAMOUNT));
+		double amt = getPNum(sc, "Amount: ", INVALIDAMOUNT);
 
 		if (balance < amt) { System.out.println("Not enough balance.\n"); return; }
 
@@ -78,7 +78,7 @@ public class Transaction {
 
 		apc.add(c);
 
-		String option = choose2(sc, "1. SINGLE | 2. JOINT: ", errFunc(INVALIDOPTION)), name, address, dob;
+		String option = choose2(sc, "1. SINGLE | 2. JOINT: ", INVALIDOPTION), name, address, dob;
 		option = (option.equals("1")) ? "SINGLE" : "JOINT";
 		if (option.equals("JOINT")) {
 			String flag = "Enter information of co-owners.";
@@ -91,22 +91,19 @@ public class Transaction {
 				address = sc.nextLine();
 				System.out.println("Date of Birth: ");
 				dob = sc.nextLine();
-				System.out.println("Enter q to quit.");
-				flag = sc.nextLine();
 				Customer tc = new Customer();
 				if (!cust.getCAcct(tc, name, address, dob)) tc = new Customer(-1, name, address, dob, null);
-				if (apc.check(tc)) {
-					System.out.println("Duplicate applicant.\n");
-					continue;
-				}
-				apc.add(tc);
+				if (apc.check(tc)) System.out.println("Duplicate applicant.\n");
+				else apc.add(tc);
+				System.out.println("Enter q to quit.");
+				flag = sc.nextLine();
 			}
 		}
 		
-		String type = choose2(sc, "1. CHECKING | 2. SAVING: ", errFunc(INVALIDOPTION));
+		String type = choose2(sc, "1. CHECKING | 2. SAVING: ", INVALIDOPTION);
 		type = (type.equals("1")) ? "CHECKING" : "SAVING";
 
-		double deposit = getPNum(sc, "Initial Deposit: ", errFunc(INVALIDAMOUNT));
+		double deposit = getPNum(sc, "Initial Deposit: ", INVALIDAMOUNT);
 		
 		int appID = app.randInt();
 
@@ -130,10 +127,10 @@ public class Transaction {
 		System.out.println("Pending application :\n");
 		app.printAll("applications");
 		
-		int appID = getPInt(sc, "Application ID: ", errFunc(INVALIDINPUT));
+		int appID = getPInt(sc, "Application ID: ", INVALIDINPUT);
 		if (!app.check(appID) && errFunc(APPNOTEXISTS)) return;
 		
-		String option = choose2(sc, "1. Approve | 2. Deny: ", errFunc(INVALIDOPTION));
+		String option = choose2(sc, "1. Approve | 2. Deny: ", INVALIDOPTION);
 		
 		
 		
@@ -171,7 +168,7 @@ public class Transaction {
 	}
 
 	static void close(Scanner sc, AccountsDAO acct) {
-		int acctNum = getPInt(sc, "Account Number: ", errFunc(INVALIDINPUT));
+		int acctNum = getPInt(sc, "Account Number: ", INVALIDINPUT);
 		double balance = acct.exist(acctNum);
 		if ( balance == -1) {
 			System.out.println("Invalid account number.\n");
