@@ -3,7 +3,7 @@ package bankingApp2.dao;
 import static bankingApp2.dao.Utils.*;
 import java.sql.*;
 
-public class AccountsDAO extends TrackerDAO {
+public class AccountsDAO extends TrackerDAO<Integer> {
 	
 	public AccountsDAO(String acctNum, String accounts) {
 		super(acctNum, accounts);

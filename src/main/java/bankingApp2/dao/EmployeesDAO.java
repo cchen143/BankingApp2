@@ -5,7 +5,7 @@ import java.sql.*;
 import java.util.HashSet;
 import java.util.Set;
 
-public class EmployeesDAO extends TrackerDAO {
+public class EmployeesDAO extends TrackerDAO<Integer> {
 	
 	public EmployeesDAO(String col, String table) {
 		super(col, table);

@@ -5,7 +5,7 @@ import static bankingApp2.dao.Utils.*;
 import java.sql.*;
 import bankingApp2.models.Customer;
 	
-public class CustomersDAO extends TrackerDAO {
+public class CustomersDAO extends TrackerDAO<Integer> {
 	
 	public CustomersDAO(String col, String table) {
 		super(col, table);

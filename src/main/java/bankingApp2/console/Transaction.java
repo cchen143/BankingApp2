@@ -11,15 +11,10 @@ import static bankingApp2.dao.Utils.*;
 public class Transaction {
 
 	static void withdraw(Scanner sc, AccountsDAO acct) {
-		System.out.println("Account Number: ");
-		int acctNum = isPosInt(sc.nextLine());
+		int acctNum = getPInt(sc, "Account Number: ", errFunc(INVALIDINPUT));
 		double balance = acct.exist(acctNum);
 		if ( balance == -1) { System.out.println("Invalid acoount number.\n"); return; }
-		double amt = -1;
-		do {
-			System.out.println("Amount: ");
-			amt = isPosNum(sc.nextLine());
-		} while (amt == -1 && invalidAmount());
+		double amt = getPNum(sc, "Amount: ", errFunc(INVALIDAMOUNT));
 		if (balance < amt) { System.out.println("Not enough balance.\n"); return; }
 		Connection con = ConnectionManager.getConnection();
 		acct.update(con, acctNum, balance, amt, "WITHDRAW");
@@ -27,36 +22,26 @@ public class Transaction {
 	}
 
 	static void deposit(Scanner sc, AccountsDAO acct) {
-		System.out.println("Account Number: ");
-		int acctNum = isPosInt(sc.nextLine());
+		int acctNum = getPInt(sc, "Account Number: ", errFunc(INVALIDINPUT));
 		double balance = acct.exist(acctNum);
 		if ( balance == -1) {
 			System.out.println("Invalid acoount number.\n");
 			return;
 		}
-		double amt = -1;
-		do {
-			System.out.println("Amount: ");
-			amt = isPosNum(sc.nextLine());
-		} while (amt == -1 && invalidAmount());
+		double amt = getPNum(sc, "Amount: ", errFunc(INVALIDAMOUNT));
+		
 		Connection con = ConnectionManager.getConnection();
 		acct.update(con, acctNum, balance, amt, "DEPOSIT");
 	}
 
 	static void transfer(Scanner sc, AccountsDAO acct) {
-		System.out.println("From Account Number: ");
-		int acctNum1 = isPosInt(sc.nextLine());
-		System.out.println("To Account Number: ");
-		int acctNum2 = isPosInt(sc.nextLine());
+		int acctNum1 = getPInt(sc, "From Account Number: ", errFunc(INVALIDINPUT));
+		int acctNum2 = getPInt(sc, "To Account Number: ", errFunc(INVALIDINPUT));
 
 		double balance = acct.exist(acctNum1), balance2 = acct.exist(acctNum2);
 		if (balance < 0 || balance2 < 0) { System.out.println("Invalid account number.\n"); return; }
 
-		double amt = -1;
-		do {
-			System.out.println("Amount: ");
-			amt = isPosNum(sc.nextLine());
-		} while (amt == -1 && invalidAmount());
+		double amt = getPNum(sc, "Amount: ", errFunc(INVALIDAMOUNT));
 
 		if (balance < amt) { System.out.println("Not enough balance.\n"); return; }
 
@@ -86,7 +71,7 @@ public class Transaction {
 		address = sc.nextLine();
 		System.out.println("Date of Birth: ");
 		dob = sc.nextLine();
-		if (!cust.getCAcct(c, name, address, dob) && cAcctNotExists()) return;
+		if (!cust.getCAcct(c, name, address, dob) && errFunc(CACCTNOTEXIST)) return;
 		System.out.println("\n" + c.toString());
 		viewStatement(c, acct);
 	}
@@ -95,8 +80,7 @@ public class Transaction {
 
 		apc.add(c);
 
-		String option = choose2(sc, "1. SINGLE | 2. JOINT: "), name, address, dob;
-		double deposit = -1;
+		String option = choose2(sc, "1. SINGLE | 2. JOINT: ", errFunc(INVALIDOPTION)), name, address, dob;
 		option = (option.equals("1")) ? "SINGLE" : "JOINT";
 		List<String> info = new ArrayList<>();
 		if (option.equals("JOINT")) {
@@ -116,14 +100,11 @@ public class Transaction {
 			apc.addToTemp(info.toArray(new String[info.size()]));
 		}
 		
-		String type = choose2(sc, "1. CHECKING | 2. SAVING: ");
+		String type = choose2(sc, "1. CHECKING | 2. SAVING: ", errFunc(INVALIDOPTION));
 		type = (type.equals("1")) ? "CHECKING" : "SAVING";
 
-		do {
-			System.out.println("Initial Deposit: ");
-			deposit = isPosNum(sc.nextLine());
-		} while (deposit == -1 && invalidAmount());
-
+		double deposit = getPNum(sc, "Initial Deposit: ", errFunc(INVALIDAMOUNT));
+		
 		int appID = app.randInt();
 
 		Connection con = ConnectionManager.getConnection();
@@ -132,7 +113,7 @@ public class Transaction {
 			app.newApplictaion(con, appID, type, deposit);
 			apc.newApplicants(con, appID);
 			con.commit();
-			apc.clearTemp();
+			apc.removeAll();
 			app.add(appID);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -146,15 +127,10 @@ public class Transaction {
 		System.out.println("Pending application :\n");
 		app.printAll("applications");
 		
-		int appID = -1;
-		app.printSet();
-		do {
-			System.out.println("Application ID: ");
-			appID = isPosInt(sc.nextLine());
-			System.out.println(appID);
-			app.printSet();
-		} while (!app.checkElement(appID) && appNotExists());
-		String option = choose2(sc, "1. Approve | 2. Deny: ");
+		int appID = getPInt(sc, "Application ID: ", errFunc(INVALIDINPUT));
+		if (!app.check(appID) && errFunc(APPNOTEXISTS)) return;
+		
+		String option = choose2(sc, "1. Approve | 2. Deny: ", errFunc(INVALIDOPTION));
 		
 		
 		
@@ -179,7 +155,7 @@ public class Transaction {
 			app.delete(con, "appID", "applications", appID);
 			con.commit();
 			app.remove(appID);
-			apc.clearTemp();
+			apc.removeAll();
 			if (option.equals("1")) {
 				cust.addToTemp(cs);
 				acct.add(acctNum);
@@ -192,8 +168,7 @@ public class Transaction {
 	}
 
 	static void close(Scanner sc, AccountsDAO acct) {
-		System.out.println("Account number: ");
-		int acctNum = isPosInt(sc.nextLine());
+		int acctNum = getPInt(sc, "Account Number: ", errFunc(INVALIDINPUT));
 		double balance = acct.exist(acctNum);
 		if ( balance == -1) {
 			System.out.println("Invalid account number.\n");
