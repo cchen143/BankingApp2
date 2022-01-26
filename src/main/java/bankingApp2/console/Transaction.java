@@ -9,7 +9,6 @@ import static bankingApp2.dao.Utils.*;
 public class Transaction {
 
 	static void withdraw(Scanner sc, AccountsDAO acct) {
-		if (acct.size() == 0) { System.out.println("No active account.\n"); return; }
 		int acctNum = getPInt(sc, "Account Number: ", INVALIDINPUT);
 		double balance = acct.exist(acctNum);
 		if ( balance == -1) { System.out.println("Invalid acoount number.\n"); return; }
@@ -21,7 +20,6 @@ public class Transaction {
 	}
 
 	static void deposit(Scanner sc, AccountsDAO acct) {
-		//if (acct.size() == 0) { System.out.println("No active account.\n"); return; }
 		int acctNum = getPInt(sc, "Account Number: ", INVALIDINPUT);
 		double balance = acct.exist(acctNum);
 		if ( balance == -1) {
@@ -35,7 +33,6 @@ public class Transaction {
 	}
 
 	static void transfer(Scanner sc, AccountsDAO acct) {
-		if (acct.size() == 0) { System.out.println("No active account.\n"); return; }
 		int acctNum1 = getPInt(sc, "From Account Number: ", INVALIDINPUT);
 		int acctNum2 = getPInt(sc, "To Account Number: ", INVALIDINPUT);
 
@@ -60,14 +57,10 @@ public class Transaction {
 	}
 
 	static void viewStatement(Customer c, AccountsDAO acct) {
-		if (acct.size() == 0) { System.out.println("No active account.\n"); return; }
-		
 		System.out.println("Total Balance: " + acct.printAcctInfo(c.getCID()) + "\n");
 	}
 
 	static void viewCustomerInfo(Scanner sc, CustomersDAO cust, AccountsDAO acct) {
-		if (cust.size() == 0) { System.out.println("No customer in the system.\n"); return; }
-		
 		String name, address, dob;
 		Customer c = new Customer();
 		System.out.println("Name: ");
@@ -130,7 +123,6 @@ public class Transaction {
 	}
 
 	static void review(Scanner sc, ApplicationsDAO app, ApplicantsDAO apc, AccountsDAO acct, OwnersDAO own, CustomersDAO cust) {
-		if (app.size() == 0) { System.out.println("No pending application."); return; }
 		System.out.println("Pending application :\n");
 		app.printAll("applications");
 		
@@ -175,8 +167,6 @@ public class Transaction {
 	}
 
 	static void close(Scanner sc, AccountsDAO acct) {
-		if (acct.size() == 0) { System.out.println("No active account.\n"); return; }
-		
 		int acctNum = getPInt(sc, "Account Number: ", INVALIDINPUT);
 		double balance = acct.exist(acctNum);
 		if ( balance == -1) {
