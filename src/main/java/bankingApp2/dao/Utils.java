@@ -43,9 +43,9 @@ public class Utils {
 	
 	public static boolean errFunc(String errormessage) { System.out.println(errormessage); return true; }
 
-	public static boolean isPNum(String str) { return str.matches("[1-9]\\d*(\\.*\\d*)?") || str.matches("0\\.\\d*[1-9]"); }
+	public static boolean isPNum(String str) { return str.matches("\\d*[1-9]\\d*(\\.*\\d*)?") || str.matches("0\\.\\d*[1-9]\\d*"); }
 	
-	public static boolean isPInt(String str) { return str.matches("[1-9]\\d*"); }
+	public static boolean isPInt(String str) { return str.matches("\\d*[1-9]\\d*"); }
 	
 	public static String choose2(Scanner sc, String opt, String err) {
 		String res;
