@@ -37,11 +37,8 @@ public class Driver {
 			UserController control1 = new UserController(app, con);
 			CustomerController control2 = new CustomerController(app, con);
 			AccountController control3 = new AccountController(app, con);
+			
 
 		}
-		
-		
 	}		
 }
-
-	

@@ -152,22 +152,22 @@ public class Menu {
 					Transaction.apply(sc, c, app, apc, cust);
 					break;
 				case "2":
-					if (acct.size() == 0) { System.out.println("No active account.\n"); return; }
+					if (acct.size() == 0) { System.out.println("No active account.\n"); break; }
 					acct.printAcctInfo(c.getCID());
 					Transaction.withdraw(sc, acct);
 					break;
 				case "3":
-					if (acct.size() == 0) { System.out.println("No active account.\n"); return; }
+					if (acct.size() == 0) { System.out.println("No active account.\n"); break; }
 					acct.printAcctInfo(c.getCID());
 					Transaction.deposit(sc, acct);
 					break;
 				case "4":
-					if (acct.size() == 0) { System.out.println("No active account.\n"); return; }
+					if (acct.size() == 0) { System.out.println("No active account.\n"); break; }
 					acct.printAcctInfo(c.getCID());
 					Transaction.transfer(sc, acct);
 					break;
 				case "5":
-					if (acct.size() == 0) { System.out.println("No active account.\n"); return; }
+					if (acct.size() == 0) { System.out.println("No active account.\n"); break; }
 					Transaction.viewStatement(c, acct);
 					break;
 				case "6":
@@ -179,11 +179,11 @@ public class Menu {
 				String option2 = choose3(sc, "1. Review | 2. View Customer Info | 3. Exit: ", INVALIDOPTION);
 				switch(option2) {
 				case "1":
-					if (app.size() == 0) { System.out.println("No pending application."); return; }
+					if (app.size() == 0) { System.out.println("No pending application."); break; }
 					Transaction.review(sc, app, apc, acct, own, cust);
 					break;
 				case "2":
-					if (cust.size() == 0) { System.out.println("No customer in the system.\n"); return; }
+					if (cust.size() == 0) { System.out.println("No customer in the system.\n"); break; }
 					Transaction.viewCustomerInfo(sc, cust, acct);
 					break;
 				case "3":
@@ -194,30 +194,30 @@ public class Menu {
 				String option3 = choose7(sc, "1. Review | 2. View Customer Info | 3. Withdraw | 4. Deposit | 5. Transfer | 6. Close Account | 7. Exit: ", INVALIDOPTION);
 				switch(option3) {
 				case "1":
-					if (app.size() == 0) { System.out.println("No pending application."); return; }
+					if (app.size() == 0) { System.out.println("No pending application."); break; }
 					Transaction.review(sc, app, apc, acct, own, cust);
 					break;
 				case "2":
-					if (cust.size() == 0) { System.out.println("No customer in the system.\n"); return; }
+					if (cust.size() == 0) { System.out.println("No customer in the system.\n"); break; }
 					Transaction.viewCustomerInfo(sc, cust, acct);
 					break;
 				case "3":
-					if (acct.size() == 0) { System.out.println("No active account.\n"); return; }
+					if (acct.size() == 0) { System.out.println("No active account.\n"); break; }
 					acct.printAll("accounts");
 					Transaction.withdraw(sc, acct);
 					break;
 				case "4":
-					if (acct.size() == 0) { System.out.println("No active account.\n"); return; }
+					if (acct.size() == 0) { System.out.println("No active account.\n"); break; }
 					acct.printAll("accounts");
 					Transaction.deposit(sc, acct);
 					break;
 				case "5":
-					if (acct.size() == 0) { System.out.println("No active account.\n"); return; }
+					if (acct.size() == 0) { System.out.println("No active account.\n"); break; }
 					acct.printAll("accounts");
 					Transaction.transfer(sc, acct);
 					break;
 				case "6":
-					if (acct.size() == 0) { System.out.println("No active account.\n"); return; }
+					if (acct.size() == 0) { System.out.println("No active account.\n"); break; }
 					acct.printAll("accounts");
 					Transaction.close(sc, acct);
 					break;
