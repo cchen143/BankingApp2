@@ -21,7 +21,7 @@ public class Transaction {
 	}
 
 	static void deposit(Scanner sc, AccountsDAO acct) {
-		if (acct.size() == 0) { System.out.println("No active account.\n"); return; }
+		//if (acct.size() == 0) { System.out.println("No active account.\n"); return; }
 		int acctNum = getPInt(sc, "Account Number: ", INVALIDINPUT);
 		double balance = acct.exist(acctNum);
 		if ( balance == -1) {

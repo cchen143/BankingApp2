@@ -52,9 +52,10 @@ public class CustomerController {
 		int len = 0;
 		String res = "No one in the system.";
 		for (String name : names) {
-			if (name.length() > len) {
-				res = name;
-				len = name.length();
+			String n = name.trim();
+			if (n.length() > len) {
+				res = n;
+				len = n.length();
 			}
 		}
 		ctx.result(res);
