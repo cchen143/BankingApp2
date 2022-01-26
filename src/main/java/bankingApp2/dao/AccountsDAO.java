@@ -2,6 +2,10 @@ package bankingApp2.dao;
 
 import static bankingApp2.dao.Utils.*;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import bankingApp2.models.Account;
 
 public class AccountsDAO extends TrackerDAO<Integer> {
 	
@@ -65,6 +69,20 @@ public class AccountsDAO extends TrackerDAO<Integer> {
 			pstmt.setBoolean(4, isjoint);
 			pstmt.executeUpdate();
 		} catch (SQLException e) { e.printStackTrace(); } 
+	}
+	
+	//--------------------------------------------API-----------------------------------------------//
+	public List<Account> getAllAccounts() {
+		Connection con = ConnectionManager.getConnection();
+		List<Account> accts = new ArrayList<>();
+		try (Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT * FROM accounts;")) {
+			while (rs.next()) {
+				accts.add(new Account(rs.getInt("acctNum"), rs.getString("acctType"), rs.getDouble("balance"), rs.getBoolean("isjoint")));
+			}
+		} catch (SQLException e) { e.printStackTrace(); }
+		
+		return accts;
 	}
 
 }
