@@ -3,6 +3,9 @@ package bankingApp2.dao;
 import static bankingApp2.dao.Utils.*;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 import bankingApp2.models.Customer;
 	
 public class CustomersDAO extends TrackerDAO<Integer> {
@@ -118,7 +121,30 @@ public class CustomersDAO extends TrackerDAO<Integer> {
 			} catch (SQLException e) { e.printStackTrace(); }
 			return res;
 		}
-	
+		
+		public List<String> findLongestName() {
+			List<String> res = new ArrayList<>();
+			Connection con = ConnectionManager.getConnection();
+			try (Statement stmt = con.createStatement();
+					ResultSet rs = stmt.executeQuery(SELECT + "name" + FROM + "customers;")) {
+				while (rs.next()) {
+					res.add(rs.getString("name"));
+				}
+			} catch (SQLException e) { e.printStackTrace(); }
+			return res;
+		}
+		
+		public List<Customer> getAllCustomers() {
+			List<Customer> res = new ArrayList<>();
+			Connection con = ConnectionManager.getConnection();
+			try (Statement stmt = con.createStatement();
+					ResultSet rs = stmt.executeQuery(SELECT + ALL + FROM + "customers;")) {
+				while (rs.next()) {
+					res.add(new Customer(rs.getInt("cID"), rs.getString("name"), rs.getString("Address"), rs.getString("dob"), rs.getString("username")));
+				}
+			} catch (SQLException e) { e.printStackTrace(); }
+			return res;
+		}
 }
 
 

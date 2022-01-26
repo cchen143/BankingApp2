@@ -1,10 +1,12 @@
 package bankingApp2.controller;
 
 import java.sql.Connection;
+import java.util.List;
 
 import bankingApp2.dao.ConnectionManager;
 import bankingApp2.dao.CustomersDAO;
 import bankingApp2.models.Customer;
+import bankingApp2.models.UserAcct;
 import io.javalin.Javalin;
 import io.javalin.http.Handler;
 
@@ -18,8 +20,8 @@ public class CustomerController {
 		this.con = con;
 		this.cust = new CustomersDAO("cID", "customers");
 		app.get("/customers/{name_address_dob}", getCustomerInfo);
-		//app.post("/users", createNewUser);
-		//app.put("/users/{username}", updateUser);
+		app.get("/customers/findlongestname/find", findLongestName);
+		app.get("/customers/", getAllCustomers);
 		app.delete("/customers/{name}", deleteCustomerByName);
 	}
 	
@@ -43,5 +45,27 @@ public class CustomerController {
 			ctx.result("Not a registered customer.\n");
 			ctx.status(400);
 		}
+	};
+	
+	public Handler findLongestName = ctx -> {
+		List<String> names = cust.findLongestName();
+		int len = 0;
+		String res = "No one in the system.";
+		for (String name : names) {
+			if (name.length() > len) {
+				res = name;
+				len = name.length();
+			}
+		}
+		ctx.result(res);
+		ctx.status(200);
+	};
+	
+	
+	
+	public Handler getAllCustomers = ctx -> {
+		List<Customer> users = cust.getAllCustomers();
+		ctx.json(users);
+		ctx.status(200);
 	};
 }

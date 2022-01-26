@@ -3,7 +3,6 @@ package bankingApp2.controller;
 import java.sql.Connection;
 
 import bankingApp2.dao.AccountsDAO;
-import bankingApp2.dao.UserAcctsDAO;
 import io.javalin.Javalin;
 
 public class AccountController {
