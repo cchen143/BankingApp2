@@ -8,6 +8,8 @@ import static bankingApp2.dao.Utils.*;
 
 public abstract class TrackerDAO<T> implements DAO {
 	
+	
+	//Pulls data from DB for a fast query at the beginning of each user session.
 	protected Set<T> elements;
 	
 	@SuppressWarnings("unchecked")

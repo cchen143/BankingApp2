@@ -11,6 +11,70 @@ import io.javalin.Javalin;
 
 public class Driver {
 	
+	
+	/*
+	DROP TABLE owners;
+	DROP TABLE applicants;
+	DROP TABLE applications;
+	DROP TABLE accounts;
+	DROP TABLE employees;
+	DROP TABLE customers;
+	DROP TABLE useraccts;
+
+
+	CREATE TABLE employees (
+			eID INTEGER PRIMARY KEY,
+			name CHAR(50),
+			username CHAR(50) UNIQUE
+			);
+
+	CREATE TABLE customers (
+			cID INTEGER PRIMARY KEY,
+			name CHAR(50),
+			address CHAR(100),
+			dob CHAR(8),
+			username CHAR(50) UNIQUE
+			);
+
+	CREATE TABLE useraccts (
+			username CHAR(50) PRIMARY KEY,
+			pwd CHAR(50),
+			usertype CHAR(8)
+			);
+
+	CREATE TABLE applications (
+			appID INTEGER PRIMARY KEY,
+			acctType CHAR(8),
+			deposit NUMERIC
+			);
+
+	CREATE TABLE accounts (
+			acctNum INTEGER PRIMARY KEY,
+			acctType CHAR(8),
+			balance NUMERIC,
+			isjoint BOOLEAN
+			);
+
+	CREATE TABLE applicants (
+			appID INTEGER,
+			cID INTEGER,
+			name CHAR(50),
+			address CHAR(100),
+			dob CHAR(8),
+			FOREIGN KEY (appID) REFERENCES applications(appID)
+			);
+
+	CREATE TABLE owners (
+			acctNum INTEGER,
+			cID INTEGER,
+			FOREIGN KEY (acctNum) REFERENCES accounts(acctNum),
+			FOREIGN KEY (cID) REFERENCES customers(cID)
+			);*/
+
+	 
+	
+	
+	
 	public static void main(String[] args) throws Exception{
 		
 		Scanner sc  = new Scanner(System.in);

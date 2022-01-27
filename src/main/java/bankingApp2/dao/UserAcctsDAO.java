@@ -10,6 +10,13 @@ import bankingApp2.models.UserAcct;
 
 public class UserAcctsDAO extends TrackerDAO<String> {
 	
+	//Cache
+	//Pulls all usernames from DB when a Menu Object is created.
+	//Keeps track the useracctrs.username during each user session.
+	//Gets updated when a user customer account is created.
+
+	//protected Set<T> elements; from TrackDAO
+	
 	public UserAcctsDAO(String col, String table) {
 		super(col, table);
 	}

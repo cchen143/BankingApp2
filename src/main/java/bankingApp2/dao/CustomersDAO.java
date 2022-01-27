@@ -9,6 +9,12 @@ import java.util.List;
 import bankingApp2.models.Customer;
 	
 public class CustomersDAO extends TrackerDAO<Integer> {
+	//Cache
+	//Pulls all customer IDs from DB when a Menu Object is created.
+	//Keeps track the customers.cID during each user session.
+	//Gets updated when a new customer account is created.
+
+	//protected Set<T> elements; from TrackDAO
 	
 	public CustomersDAO(String col, String table) {
 		super(col, table);

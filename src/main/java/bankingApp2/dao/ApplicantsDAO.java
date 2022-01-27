@@ -9,6 +9,8 @@ import bankingApp2.models.Customer;
 
 //joint table; customers and applications
 public class ApplicantsDAO implements DAO {
+	
+	//Temporary holder for the Customer objects(applicant) using in each transaction.
 	Set<Customer> temp;
 	
 	public ApplicantsDAO() {

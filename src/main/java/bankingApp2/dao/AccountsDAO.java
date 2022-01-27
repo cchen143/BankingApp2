@@ -4,10 +4,18 @@ import static bankingApp2.dao.Utils.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import bankingApp2.models.Account;
 
 public class AccountsDAO extends TrackerDAO<Integer> {
+	
+	//Cache
+	//Pulls all account numbers from DB when a Menu Object is created.
+	//Keeps track the accounts.acctnum during each user session.
+	//Gets updated when a new account is created or closed.
+	
+	//protected Set<T> elements; from TrackDAO
 	
 	public AccountsDAO(String acctNum, String accounts) {
 		super(acctNum, accounts);

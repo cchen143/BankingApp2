@@ -7,6 +7,13 @@ import java.util.Set;
 
 public class EmployeesDAO extends TrackerDAO<Integer> {
 	
+	//Cache
+	//Pulls all employee IDs from DB when a Menu Object is created.
+	//Keeps track the employees.eID during each user session.
+	//Gets updated when a new employee account is created.
+
+	//protected Set<T> elements; from TrackDAO
+	
 	public EmployeesDAO(String col, String table) {
 		super(col, table);
 	}

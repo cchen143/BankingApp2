@@ -41,12 +41,16 @@ public class Utils {
 	
 	public static final String INVALIDINPUT = "Invalid input.\n";
 	
+	//Util function for generating an error message.
 	public static boolean errFunc(String errormessage) { System.out.println(errormessage); return true; }
-
+	
+	//Checks whether a string can be converted to a positive double.
 	public static boolean isPNum(String str) { return str.matches("\\d*[1-9]\\d*(\\.*\\d*)?") || str.matches("0\\.\\d*[1-9]\\d*"); }
 	
+	//Checks whether a string can be converted to a positive integer.
 	public static boolean isPInt(String str) { return str.matches("\\d*[1-9]\\d*"); }
 	
+	//Util functions for generating menu.
 	public static String choose2(Scanner sc, String opt, String err) {
 		String res;
 		do {
@@ -88,6 +92,7 @@ public class Utils {
 		return res;
 	}
 	
+	//Reads input from user and returns a positive integer when a string can be converted.
 	public static int getPInt(Scanner sc, String text, String err) {
 		String temp = "";
 		do {
@@ -98,6 +103,7 @@ public class Utils {
 		return Integer.parseInt(temp);
 	}
 	
+	//Reads input from user and returns a positive double when a string can be converted.
 	public static double getPNum(Scanner sc, String text, String err) {
 		String temp = "";
 		do {
@@ -108,6 +114,7 @@ public class Utils {
 		return Double.parseDouble(temp);
 	}
 	
+	//returns a user input data which is not in the hashset of each data access object 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static String getOneInput(Scanner sc, String text, TrackerDAO dao, String err) {
 		String res = "";

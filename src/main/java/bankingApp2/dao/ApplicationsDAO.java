@@ -11,6 +11,13 @@ import bankingApp2.models.Application;
 
 public class ApplicationsDAO extends TrackerDAO<Integer> {
 	
+		//Cache
+		//Pulls all application IDs from DB when a Menu Object is created.
+		//Keeps track the applications.appID during each user session.
+		//Gets updated when a new application is created or reviewed.
+		
+		
+		//protected Set<T> elements; from TrackDAO
 	public ApplicationsDAO(String col, String table) {
 		super(col, table);
 	}
